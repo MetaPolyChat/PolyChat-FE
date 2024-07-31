@@ -6,31 +6,56 @@
 	"materials": [
 		{
 			"isMultiMaterial": false,
-			"bindedMeshes": [
-				"eee4645a-645f-4faf-b10b-868d396f01f0"
-			],
+			"bindedMeshes": [],
 			"json": "materials/ground.material"
+		},
+		{
+			"isMultiMaterial": false,
+			"bindedMeshes": [],
+			"json": "materials/sky.material"
+		},
+		{
+			"isMultiMaterial": false,
+			"bindedMeshes": [
+				"2058c095-35cf-4941-a4a8-24fb341528e5"
+			],
+			"json": "materials/cube.material"
+		},
+		{
+			"isMultiMaterial": false,
+			"bindedMeshes": [],
+			"json": "materials/Material!leg-2127744328832.material"
+		},
+		{
+			"isMultiMaterial": false,
+			"bindedMeshes": [],
+			"json": "materials/GroundColor.material"
+		},
+		{
+			"isMultiMaterial": false,
+			"bindedMeshes": [],
+			"json": "materials/Material!hiar-2127744329312.material"
 		},
 		{
 			"isMultiMaterial": false,
 			"bindedMeshes": [
 				"6a927ea7-51d9-4248-9b80-4d34b53b386e"
 			],
-			"json": "materials/sky.material"
+			"json": "materials/Material!hat-2127744322752.material"
 		},
 		{
 			"isMultiMaterial": false,
-			"bindedMeshes": [
-				"e22f3d3a-65b2-4993-8c52-cb05d2af8278"
-			],
-			"json": "materials/cube.material"
+			"bindedMeshes": [],
+			"json": "materials/Black.material"
 		}
 	],
-	"textures": [],
+	"textures": [
+		"2k_earth_daymap.jpg-975e4679-66b6-4186-bb57-14cdf8370d5b.json",
+		"green-grass.jpg-abb7e5de-b231-4283-95ed-e320edf5e359.json"
+	],
 	"meshes": [
-		"ground-eee4645a-645f-4faf-b10b-868d396f01f0.json",
-		"cube-e22f3d3a-65b2-4993-8c52-cb05d2af8278.json",
-		"sky-6a927ea7-51d9-4248-9b80-4d34b53b386e.json"
+		"sky-6a927ea7-51d9-4248-9b80-4d34b53b386e.json",
+		"Earth-2058c095-35cf-4941-a4a8-24fb341528e5.json"
 	],
 	"transformNodes": [],
 	"particleSystems": [],
@@ -49,7 +74,7 @@
 		"clearColor": [
 			0.2,
 			0.2,
-			0.3,
+			0.30196078431372547,
 			1
 		],
 		"ambientColor": [
@@ -111,14 +136,20 @@
 			"_ditheringEnabled": false,
 			"_ditheringIntensity": 0.00392156862745098,
 			"_skipFinalColorClamp": false,
-			"_applyByPostProcess": true,
+			"_applyByPostProcess": false,
 			"_isEnabled": true
 		},
 		"animations": [],
 		"postProcessesEnabled": true,
 		"metadata": {
 			"script": {
-				"name": "None"
+				"name": "src/scenes/earthScript.ts",
+				"properties": {
+					"speed": {
+						"type": "number",
+						"value": 0
+					}
+				}
 			},
 			"postProcesses": {
 				"ssao": {
@@ -304,9 +335,7 @@
 				"blurKernel": 1,
 				"blurScale": 2,
 				"useKernelBlur": false,
-				"renderList": [
-					"e22f3d3a-65b2-4993-8c52-cb05d2af8278"
-				],
+				"renderList": [],
 				"numCascades": 4,
 				"debug": false,
 				"stabilizeCascades": false,
@@ -345,15 +374,15 @@
 			"checkCollisions": false,
 			"applyGravity": false,
 			"rotation": [
-				0.2363934499000924,
-				-0.8671220382793736,
+				0.4517828395602092,
+				-1.5996667244829887,
 				0
 			],
 			"speed": 2,
 			"position": [
-				3.752446112868129,
-				1.747879821972457,
-				-2.975928737894377
+				-11.959235084172422,
+				-5.819802498113075,
+				-0.271945596056398
 			],
 			"upVector": [
 				0,
@@ -363,7 +392,7 @@
 			"fov": 0.8,
 			"projectionPlaneTilt": 0,
 			"minZ": 1,
-			"maxZ": 10000,
+			"maxZ": 16875,
 			"inertia": 0.5,
 			"mode": 0,
 			"layerMask": 268435455,
