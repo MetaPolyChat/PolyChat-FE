@@ -26,11 +26,10 @@ var decorators_1 = require("./decorators");
 var EarthScript = /** @class */ (function (_super) {
     __extends(EarthScript, _super);
     function EarthScript() {
-        return _super !== null && _super.apply(this, arguments) || this;
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.speed = 0.001;
+        return _this;
     }
-    EarthScript.prototype.onStart = function () {
-        this._scene.debugLayer.show();
-    };
     EarthScript.prototype.onUpdate = function () {
         this.rotation.y += this.speed;
     };

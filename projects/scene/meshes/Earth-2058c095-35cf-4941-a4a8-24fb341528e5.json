@@ -7,13 +7,13 @@
 			"uniqueId": 83,
 			"type": "Mesh",
 			"position": [
-				0,
-				0,
-				0
+				1,
+				1,
+				1
 			],
 			"rotation": [
 				0,
-				-1.2565931763138627,
+				0,
 				0
 			],
 			"scaling": [
@@ -67,7 +67,7 @@
 					"properties": {
 						"speed": {
 							"type": "number",
-							"value": 0.1
+							"value": 0.001
 						}
 					}
 				},
