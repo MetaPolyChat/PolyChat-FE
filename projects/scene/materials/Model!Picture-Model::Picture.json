@@ -1,0 +1,11 @@
+{
+	"name": "Model::Picture",
+	"id": "Model::Picture",
+	"uniqueId": 477,
+	"tags": null,
+	"materials": [
+		"359c14ac-e1fd-415e-a2d0-448f0a0f6fb7",
+		"98980d0a-89d2-4c51-96c1-658c88b71ac4"
+	],
+	"metadata": null
+}

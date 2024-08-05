@@ -1,7 +1,7 @@
 {
 	"editorVersion": "4.5.0",
 	"lastOpenedScene": "projects/scene/scene.editorproject",
-	"serverPort": 1234,
+	"serverPort": 1338,
 	"generateSceneOnSave": true,
 	"firstLoad": false,
 	"watchProject": true,
@@ -21,9 +21,7 @@
 	},
 	"ktx2CompressedTextures": {
 		"enabled": false,
-		"pvrTexToolCliPath": {
-			"darwin": ""
-		},
+		"pvrTexToolCliPath": "",
 		"nvidiaTextureToolsLink": {},
 		"forcedFormat": "automatic",
 		"enabledInPreview": false,

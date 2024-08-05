@@ -4,7 +4,5 @@ exports.scriptsMap = void 0;
 /**
  * Defines the map of all available scripts in the project.
  */
-exports.scriptsMap = {
-    "src/scenes/EarthScript.ts": require("./EarthScript"),
-};
+exports.scriptsMap = {};
 //# sourceMappingURL=scripts-map.js.map

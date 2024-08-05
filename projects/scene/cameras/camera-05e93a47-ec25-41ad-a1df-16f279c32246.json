@@ -13,15 +13,15 @@
 	"checkCollisions": false,
 	"applyGravity": false,
 	"rotation": [
-		0.6109069254690702,
-		-3.9089564138359187,
+		0.14400873959133342,
+		-4.152381726862046,
 		0
 	],
 	"speed": 0.1,
 	"position": [
-		1,
-		1,
-		1
+		-3.853118178933855,
+		1.265373375965023,
+		2.167350666943626
 	],
 	"upVector": [
 		0,
@@ -31,7 +31,7 @@
 	"fov": 0.8,
 	"projectionPlaneTilt": 0,
 	"minZ": 1,
-	"maxZ": 56953.125,
+	"maxZ": 5000,
 	"inertia": 0.9,
 	"mode": 0,
 	"layerMask": 268435455,

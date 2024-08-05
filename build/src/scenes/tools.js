@@ -64,7 +64,7 @@ require("@babylonjs/core/Engines/Extensions/engine.textureSelector");
 require("@babylonjs/core/Materials/Textures/Loaders/ktxTextureLoader");
 exports.projectConfiguration = {
     "autoLod": {
-        "enabled": false,
+        "enabled": true,
         "autoApply": true
     },
     "compressedTextures": {
