@@ -1,5 +1,5 @@
-
 .LoginBackground {
+    background-image: url("../../ImgDocument/cosmic background.png");
     background-size: cover;
     background-position: center;
     width: 100%;
@@ -7,6 +7,28 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative; /* 자식 요소에 대해 절대 위치를 설정할 수 있도록 합니다 */
+}
+
+.Earth {
+    width: 1000px; /* 적절한 크기로 설정합니다 */
+    height: 1000px;
+    background-image: url("../../ImgDocument/earth.png");
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+    animation: rotate 20s infinite linear;
+    position: absolute;
+    z-index: 1; /* 버튼과 텍스트보다 위에 표시되도록 설정 */
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .LoginContainer {
@@ -17,15 +39,20 @@
     flex-direction: column;
     align-items: center;
     min-width: 300px;
+    position: relative; /* 버튼과 텍스트가 지구 이미지 위에 표시되도록 합니다 */
+    z-index: 2;
 }
 
 .TitleStyle {
-    color: white;
+    /*color: white;*/
     margin-bottom: 20px;
-    font-family: 'Gloria Hallelujah', serif;
-    font-style: normal;
+    /*font-family: 'Gloria Hallelujah', serif;*/
+    /*font-style: normal;*/
     line-height: 170px;
-    text-align: center;
+    /*text-align: center;*/
+    background-image: url("../../ImgDocument/PolyChat.png");
+    width: 340px;
+    height: 100px;
 }
 
 .LoginInput {
@@ -38,8 +65,6 @@
 .LoginText {
     color: white;
 }
-
-
 
 .ButtonContainer {
     display: flex;
