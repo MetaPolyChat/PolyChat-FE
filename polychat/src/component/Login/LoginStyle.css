@@ -1,17 +1,40 @@
+.fade-out {
+    opacity: 0;
+    transition: opacity 1s ease-out;
+}
+
+.grow {
+    transform: scale(1.2);
+    transition: transform 1.5s ease-out;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+
 .LoginBackground {
     background-image: url("../../ImgDocument/cosmic background.png");
     background-size: cover;
     background-position: center;
-    width: 100%;
+    width: 100vw;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative; /* 자식 요소에 대해 절대 위치를 설정할 수 있도록 합니다 */
+    position: relative;
 }
 
+
 .Earth {
-    width: 1000px; /* 적절한 크기로 설정합니다 */
+    width: 1000px;
     height: 1000px;
     background-image: url("../../ImgDocument/earth.png");
     background-size: cover;
@@ -19,7 +42,7 @@
     border-radius: 50%;
     animation: rotate 20s infinite linear;
     position: absolute;
-    z-index: 1; /* 버튼과 텍스트보다 위에 표시되도록 설정 */
+    z-index: 1;
 }
 
 @keyframes rotate {
@@ -39,41 +62,69 @@
     flex-direction: column;
     align-items: center;
     min-width: 300px;
-    position: relative; /* 버튼과 텍스트가 지구 이미지 위에 표시되도록 합니다 */
+    position: relative;
     z-index: 2;
 }
 
 .TitleStyle {
-    /*color: white;*/
     margin-bottom: 20px;
-    /*font-family: 'Gloria Hallelujah', serif;*/
-    /*font-style: normal;*/
     line-height: 170px;
-    /*text-align: center;*/
     background-image: url("../../ImgDocument/PolyChat.png");
     width: 340px;
     height: 100px;
 }
 
-.LoginInput {
+.FormField {
+    display: flex;
+    flex-direction: column;
     margin-bottom: 10px;
-    padding: 10px;
-    width: 100%;
-    box-sizing: border-box;
 }
 
 .LoginText {
     color: white;
+    margin-bottom: 5px;
+    font-size: 14px;
 }
+
+.LoginInput {
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ccc; 
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.FormContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 400px;
+}
+
 
 .ButtonContainer {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 20px;
 }
 
 .ButtonStyle {
     background-color: #383EAE;
     width: 80px;
-    margin-top: 20px;
+    height: 50px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 5px; /* 버튼에 약간의 둥근 모서리 추가 */
 }
+
+.ButtonText {
+    color: white;
+    font-size: 15px;
+    margin: 0; /* 텍스트 주위의 기본 마진 제거 */
+}
+

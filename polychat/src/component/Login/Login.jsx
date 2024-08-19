@@ -1,27 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './LoginStyle.css';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export const Login = () => {
+    const [isAnimating, setIsAnimating] = useState(false);
+    const navigate = useNavigate();
+
+    const handleLoginClick = () => {
+        setIsAnimating(true);
+        // Navigate after animation duration (e.g., 1.5s)
+        setTimeout(() => {
+            navigate('/gamemain');
+        }, 1500);
+    };
+
     return (
-        <div className="LoginBackground">
-            <div className="Earth"></div>
-            <div className="LoginContainer">
+        <div className={`LoginBackground ${isAnimating ? 'fade-out' : ''}`}>
+            <div className={`Earth ${isAnimating ? 'grow' : ''}`}></div>
+            <div className={`LoginContainer ${isAnimating ? 'fade-out' : ''}`}>
                 <div className="TitleStyle"></div>
-                <div>
-                    <h5 className="LoginText">Account</h5>
-                    <input className="LoginInput" type="text" placeholder="Username" />
-                    <h5 className="LoginText">PassWord</h5>
-                    <input className="LoginInput" type="password" placeholder="Password" />
+                <div className="FormContainer">
+                    <div className="FormField">
+                        <label className="LoginText">ID</label>
+                        <input className="LoginInput" type="text" placeholder="Username" />
+                    </div>
+                    <div className="FormField">
+                        <label className="LoginText">Password</label>
+                        <input className="LoginInput" type="password" placeholder="Password" />
+                    </div>
                     <div className="ButtonContainer">
-                        <Link to={"/gamemain"}>
-                            <button className="ButtonStyle">
-                                <h5 className="LoginText">Login</h5>
-                            </button>
-                        </Link>
+                        <button className="ButtonStyle" onClick={handleLoginClick}>
+                            <h5 className="ButtonText">Login</h5>
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     );
 };
+
