@@ -8,7 +8,6 @@ export const Login = () => {
 
     const handleLoginClick = () => {
         setIsAnimating(true);
-        // Navigate after animation duration (e.g., 1.5s)
         setTimeout(() => {
             navigate('/gamemain');
         }, 1500);
@@ -22,7 +21,7 @@ export const Login = () => {
                 <div className="FormContainer">
                     <div className="FormField">
                         <label className="LoginText">ID</label>
-                        <input className="LoginInput" type="text" placeholder="Username" />
+                        <input className="LoginInput" type="text" placeholder="Your Account" />
                     </div>
                     <div className="FormField">
                         <label className="LoginText">Password</label>
