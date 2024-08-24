@@ -1,7 +1,21 @@
-.mainStyle {
-    width: 100%;
+.container {
+    display: flex;
+    width: 100vw;
     height: 100vh;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
+
+.game-container {
+    width: 50vw;
+    height: 100vh;
+    overflow: hidden; /* Prevents scrollbars from appearing */
+}
+
+.web-ui-container {
+    width: 50vw;
+    height: 100vh;
+    overflow: auto; /* Allows scrolling if content exceeds the container height */
+}
+

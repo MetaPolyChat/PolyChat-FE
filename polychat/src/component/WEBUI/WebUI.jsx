@@ -1,8 +1,6 @@
 export const WebUI = () => {
   return (
-      <div
-      style={{alignContent:'center'}}
-      >
+      <div>
           <h1>WebUIComponent</h1>
       </div>
   )

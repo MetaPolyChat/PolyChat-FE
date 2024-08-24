@@ -1,34 +1,29 @@
-import { useRef, useState } from 'react';
-import Phaser from 'phaser';
-import {PhaserGame} from "../../game/PhaserGame.jsx";
-import '/src/component/GameMain/GameMainStyle.css'
-import {WebUI} from "../WEBUI/WebUI.jsx";
+import React, { useRef, useState } from 'react';
+import { PhaserGame } from '../../game/PhaserGame.jsx';
+import '/src/component/GameMain/GameMainStyle.css';
+import { WebUI } from '../WEBUI/WebUI.jsx';
 
-function GameMain ()
-{
-    // The sprite can only be moved in the MainMenu Scene
+function GameMain() {
     const [canMoveSprite, setCanMoveSprite] = useState(true);
-
-    //  References to the PhaserGame component (game and scene are exposed)
     const phaserRef = useRef();
 
-    
-
-    // Event emitted from the PhaserGame component
     const currentScene = (scene) => {
         setCanMoveSprite(scene.scene.key !== 'MainMenu');
-    }
+    };
 
     return (
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <div style={{ flex: 1 }}>
+        <div className="container">
+            <div className="game-container">
                 <PhaserGame ref={phaserRef} currentActiveScene={currentScene} />
             </div>
-                <WebUI/>
+            <div className="web-ui-container">
+                <WebUI />
+            </div>
         </div>
-    )
-
-
+    );
 }
 
-export default GameMain
+export default GameMain;
+
+
+
