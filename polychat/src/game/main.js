@@ -1,21 +1,13 @@
 import Phaser from 'phaser';
-import { Boot } from './scenes/Boot';
-import { Game } from './scenes/Game';
-import { GameOver } from './scenes/GameOver';
-import { MainMenu } from './scenes/MainMenu';
-import { Preloader } from './scenes/Preloader';
+import {MainScene} from './scenes/MainScene.js';
 
 const config = {
     type: Phaser.AUTO,
-    width: window.innerWidth * 0.5,  // 화면의 50%
-    height: window.innerHeight,  // 전체 높이
+    width: window.innerWidth * 0.5,
+    height: window.innerHeight,
     backgroundColor: '#028af8',
     scene: [
-        Boot,
-        Preloader,
-        MainMenu,
-        Game,
-        GameOver
+        MainScene,
     ],
     scale: {
         mode: Phaser.Scale.RESIZE,
