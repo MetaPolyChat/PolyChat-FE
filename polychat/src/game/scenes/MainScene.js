@@ -19,33 +19,33 @@ export class MainScene extends Scene {
         // 이동량 설정
         this.moveDistance = 16;
 
-        // 방향 버튼 생성
+        // 방향 버튼 생성 및 위치 설정
         this.createDirectionButtons();
     }
 
     createDirectionButtons() {
         const buttonSize = 50;
         const padding = 10;
-        const centerX = 100;
-        const centerY = 400;
+        const baseX = buttonSize + padding;  // 버튼들이 위치할 x축 기준점
+        const baseY = this.scale.height - buttonSize - padding;  // 버튼들이 위치할 y축 기준점 (화면 하단)
 
         // Up 버튼
-        this.add.rectangle(centerX, centerY - buttonSize - padding, buttonSize, buttonSize, 0x0000ff)
+        this.add.rectangle(baseX, baseY - (buttonSize + padding), buttonSize, buttonSize, 0x0000ff)
             .setInteractive()
             .on('pointerdown', () => this.moveUp());
 
         // Down 버튼
-        this.add.rectangle(centerX, centerY + buttonSize + padding, buttonSize, buttonSize, 0x0000ff)
+        this.add.rectangle(baseX, baseY, buttonSize, buttonSize, 0x0000ff)
             .setInteractive()
             .on('pointerdown', () => this.moveDown());
 
         // Left 버튼
-        this.add.rectangle(centerX - buttonSize - padding, centerY, buttonSize, buttonSize, 0x0000ff)
+        this.add.rectangle(baseX - (buttonSize + padding), baseY, buttonSize, buttonSize, 0x0000ff)
             .setInteractive()
             .on('pointerdown', () => this.moveLeft());
 
         // Right 버튼
-        this.add.rectangle(centerX + buttonSize + padding, centerY, buttonSize, buttonSize, 0x0000ff)
+        this.add.rectangle(baseX + (buttonSize + padding), baseY, buttonSize, buttonSize, 0x0000ff)
             .setInteractive()
             .on('pointerdown', () => this.moveRight());
     }
