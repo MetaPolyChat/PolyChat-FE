@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import './LoginStyle.css';
 import { useNavigate } from 'react-router-dom';
 import { GoogleLogin, googleLogout, GoogleOAuthProvider } from "@react-oauth/google";
-import midiaBackground from '../../Midia/univerBackground.mp4'; // Import the video
+import midiaBackground from '../../Midia/univerBackground.mp4'; // Background video
+import transitionVideoSrc from '../../Midia/InpotalMidia.mp4'; // Import the transition video
 
 export const Login = () => {
     const [isAnimating, setIsAnimating] = useState(false);
@@ -17,13 +18,18 @@ export const Login = () => {
     const handleGoogleLoginSuccess = (response) => {
         console.log("Google Login Success:", response);
 
-        // 애니메이션 시작
+        // Start animation
         setIsAnimating(true);
 
-        // 1.5초 후 페이지 이동
-        setTimeout(() => {
+        // Show transition video immediately
+        const transitionVideo = document.getElementById('TransitionVideo');
+        transitionVideo.style.display = 'block';
+        transitionVideo.play();
+
+        // Navigate after the transition video ends
+        transitionVideo.onended = () => {
             navigate('/gamemain');
-        }, 1500);
+        };
     };
 
     const handleGoogleLoginFailure = (error) => {
@@ -32,7 +38,7 @@ export const Login = () => {
     };
 
     return (
-        <div className={`LoginWrapper ${isAnimating ? 'fade-out' : ''}`}>
+        <div className="LoginWrapper">
             <video className="BackgroundVideo" autoPlay muted loop>
                 <source src={midiaBackground} type="video/mp4" />
                 Your browser does not support the video tag.
@@ -49,6 +55,12 @@ export const Login = () => {
                     </GoogleOAuthProvider>
                 </div>
             </div>
+
+            {/* Transition Video */}
+            <video id="TransitionVideo" className="TransitionVideo" muted>
+                <source src={transitionVideoSrc} type="video/mp4" />
+                Your browser does not support the video tag.
+            </video>
         </div>
     );
 };

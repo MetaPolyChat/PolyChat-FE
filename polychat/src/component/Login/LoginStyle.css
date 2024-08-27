@@ -84,62 +84,6 @@ html, body {
     height: 100px;
 }
 
-/* Form field styling */
-.FormField {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
-}
-
-.LoginText {
-    color: white;
-    margin-bottom: 5px;
-    font-size: 14px;
-}
-
-.LoginInput {
-    padding: 10px;
-    width: 100%;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-}
-
-.FormContainer {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 400px;
-}
-
-/* Button container styling */
-.ButtonContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-}
-
-/* Button styling */
-.ButtonStyle {
-    background-color: #383EAE;
-    width: 80px;
-    height: 50px;
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    border-radius: 5px; /* Rounded corners */
-}
-
-.ButtonText {
-    color: white;
-    font-size: 15px;
-    margin: 0; /* Remove default margin around text */
-}
-
 /* Animations */
 .fade-out {
     opacity: 0;
@@ -149,4 +93,15 @@ html, body {
 .grow {
     transform: scale(1.2);
     transition: transform 1.5s ease-out;
+}
+/* Transition Video styling */
+.TransitionVideo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 3; /* Above everything else */
+    display: none; /* Initially hidden */
 }

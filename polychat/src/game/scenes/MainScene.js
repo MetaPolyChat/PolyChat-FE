@@ -1,6 +1,7 @@
 import { Scene } from 'phaser';
 import bodyImg from '../../ImgDocument/kakafrends.png';
 
+
 export class MainScene extends Scene {
     constructor() {
         super('MainScene');
