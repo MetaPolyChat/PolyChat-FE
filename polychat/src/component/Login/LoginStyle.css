@@ -1,38 +1,45 @@
-.fade-out {
-    opacity: 0;
-    transition: opacity 1s ease-out;
-}
-
-.grow {
-    transform: scale(1.2);
-    transition: transform 1.5s ease-out;
-}
+/* Global styles */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-
 html, body {
     height: 100%;
-    overflow: hidden;
+    overflow: hidden; /* Hide scrollbars */
 }
 
+/* Container for the video and login components */
+.LoginWrapper {
+    position: relative;
+    height: 100vh; /* Full viewport height */
+    width: 100vw;  /* Full viewport width */
+    overflow: hidden; /* Hide overflow to prevent scrollbars */
+}
 
+/* Video styling */
+.BackgroundVideo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Cover the container without distortion */
+    z-index: -1; /* Ensure the video is behind other content */
+}
+
+/* Login background styling */
 .LoginBackground {
-    background-image: url("../../ImgDocument/cosmic background.png");
-    background-size: cover;
-    background-position: center;
-    width: 100vw;
-    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
+    width: 100%;
+    height: 100%;
 }
 
-
+/* Earth animation styling */
 .Earth {
     width: 1000px;
     height: 1000px;
@@ -45,6 +52,7 @@ html, body {
     z-index: 1;
 }
 
+/* Rotation animation */
 @keyframes rotate {
     from {
         transform: rotate(0deg);
@@ -54,6 +62,7 @@ html, body {
     }
 }
 
+/* Login container styling */
 .LoginContainer {
     background-color: #1C1D27;
     padding: 20px;
@@ -63,9 +72,10 @@ html, body {
     align-items: center;
     min-width: 300px;
     position: relative;
-    z-index: 2;
+    z-index: 2; /* Ensure the login container is above the video and Earth */
 }
 
+/* Title styling */
 .TitleStyle {
     margin-bottom: 50px;
     line-height: 170px;
@@ -74,6 +84,7 @@ html, body {
     height: 100px;
 }
 
+/* Form field styling */
 .FormField {
     display: flex;
     flex-direction: column;
@@ -90,7 +101,7 @@ html, body {
     padding: 10px;
     width: 100%;
     box-sizing: border-box;
-    border: 1px solid #ccc; 
+    border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 14px;
 }
@@ -102,7 +113,7 @@ html, body {
     max-width: 400px;
 }
 
-
+/* Button container styling */
 .ButtonContainer {
     display: flex;
     justify-content: center;
@@ -110,6 +121,7 @@ html, body {
     margin-top: 20px;
 }
 
+/* Button styling */
 .ButtonStyle {
     background-color: #383EAE;
     width: 80px;
@@ -119,12 +131,22 @@ html, body {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    border-radius: 5px; /* 버튼에 약간의 둥근 모서리 추가 */
+    border-radius: 5px; /* Rounded corners */
 }
 
 .ButtonText {
     color: white;
     font-size: 15px;
-    margin: 0; /* 텍스트 주위의 기본 마진 제거 */
+    margin: 0; /* Remove default margin around text */
 }
 
+/* Animations */
+.fade-out {
+    opacity: 0;
+    transition: opacity 1s ease-out;
+}
+
+.grow {
+    transform: scale(1.2);
+    transition: transform 1.5s ease-out;
+}
