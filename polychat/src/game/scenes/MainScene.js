@@ -5,6 +5,7 @@ export class MainScene extends Scene {
     constructor() {
         super('MainScene');
         this.inputField = null; // 입력 필드를 관리하기 위한 변수
+        this.textTimeout = null; // 텍스트 표시 시간 제어를 위한 변수
     }
 
     preload() {
@@ -74,6 +75,47 @@ export class MainScene extends Scene {
                 align: 'center'
             }).setOrigin(0.5, 0.5);
         });
+
+        // HTML 버튼 생성 및 위치 설정
+        this.createTextDisplayButton();
+    }
+
+    createTextDisplayButton() {
+        // 버튼이 DOM에 추가된 후 생성되도록 약간의 딜레이를 줍니다
+        setTimeout(() => {
+            if (this.inputField) {
+                // 입력 필드의 위치를 기준으로 버튼을 배치
+                const inputFieldBounds = this.inputField.getBoundingClientRect();
+                const inputFieldX = inputFieldBounds.left + window.scrollX;
+                const inputFieldY = inputFieldBounds.top + window.scrollY;
+
+                // 버튼 생성
+                this.displayTextButton = this.add.rectangle(inputFieldX + this.inputField.offsetWidth + 10 + 25, inputFieldY + 15, 50, 30, 0x00ff00)
+                    .setInteractive()
+                    .on('pointerdown', () => this.displayText());
+
+                this.add.text(inputFieldX + this.inputField.offsetWidth + 10 + 25, inputFieldY + 15, 'Show', {
+                    font: '16px Arial',
+                    fill: '#ffffff',
+                    align: 'center'
+                }).setOrigin(0.5, 0.5);
+            }
+        }, 100); // 100ms 후에 버튼 생성
+    }
+
+    displayText() {
+        if (this.inputField && this.inputField.value) {
+            this.characterText.setText(this.inputField.value);
+            this.inputField.value = ''; // 입력 필드 값 비우기
+
+            // 5초 후 텍스트 제거
+            if (this.textTimeout) {
+                clearTimeout(this.textTimeout);
+            }
+            this.textTimeout = setTimeout(() => {
+                this.characterText.setText('');
+            }, 5000);
+        }
     }
 
     // 화살표 방향 기호 추가
@@ -166,14 +208,8 @@ export class MainScene extends Scene {
 
         // Phaser 게임 화면의 하단 중앙에 입력 필드를 배치
         this.inputField.style.left = `${this.scale.width / 2 - 100}px`;
-        this.inputField.style.top = `${this.scale.height - 40}px`; // 거리를 벌리기 위해 top 값을 150px로 설정
+        this.inputField.style.top = `${this.scale.height - 40}px`; // 화면 하단에서 80px 위
 
         document.body.appendChild(this.inputField);
-
-        // 입력 필드에 포커스를 주고 이벤트 핸들러 설정
-        this.inputField.addEventListener('input', () => {
-            const text = this.inputField.value;
-            this.characterText.setText(text);
-        });
     }
 }
