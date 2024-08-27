@@ -1,5 +1,5 @@
 import { Scene } from 'phaser';
-import bodyImg from '../../ImgDocument/body.png';
+import bodyImg from '../../ImgDocument/kakafrends.png';
 
 export class MainScene extends Scene {
     constructor() {
@@ -14,7 +14,8 @@ export class MainScene extends Scene {
     create() {
         // 이미지 초기 위치 설정
         this.bodyImage = this.add.image(200, 200, 'body');
-        this.bodyImage.setOrigin(0.5, 0.5);  // 중심점 설정
+        this.bodyImage.setOrigin(0.5, 0.5);
+        this.bodyImage.setDisplaySize(50,50);
 
         // 이동량 설정
         this.moveDistance = 16;
@@ -26,8 +27,15 @@ export class MainScene extends Scene {
     createDirectionButtons() {
         const buttonSize = 50;
         const padding = 10;
-        const baseX = buttonSize + padding;  // 버튼들이 위치할 x축 기준점
-        const baseY = this.scale.height - buttonSize - padding;  // 버튼들이 위치할 y축 기준점 (화면 하단)
+
+        // 화면의 너비와 높이
+        const width = this.scale.width;
+        const height = this.scale.height;
+
+        // 버튼들을 화면 맨 아래에 배치 (좀 더 위쪽으로 조정)
+        // 버튼들이 화면 맨 아래에 고정되도록 조정
+        const baseX = width / 2; // 중앙 정렬
+        const baseY = height - (buttonSize / 2) - padding - 100; // 화면 맨 아래에서 약간 위로
 
         // Up 버튼
         this.add.rectangle(baseX, baseY - (buttonSize + padding), buttonSize, buttonSize, 0x0000ff)
@@ -35,20 +43,25 @@ export class MainScene extends Scene {
             .on('pointerdown', () => this.moveUp());
 
         // Down 버튼
-        this.add.rectangle(baseX, baseY, buttonSize, buttonSize, 0x0000ff)
+        this.add.rectangle(baseX, baseY + (buttonSize + padding), buttonSize, buttonSize, 0x0000ff)
             .setInteractive()
             .on('pointerdown', () => this.moveDown());
 
         // Left 버튼
-        this.add.rectangle(baseX - (buttonSize + padding), baseY, buttonSize, buttonSize, 0x0000ff)
+        this.add.rectangle(baseX - (buttonSize + padding) * 1.5, baseY, buttonSize, buttonSize, 0x0000ff)
             .setInteractive()
             .on('pointerdown', () => this.moveLeft());
 
         // Right 버튼
-        this.add.rectangle(baseX + (buttonSize + padding), baseY, buttonSize, buttonSize, 0x0000ff)
+        this.add.rectangle(baseX + (buttonSize + padding) * 1.5, baseY, buttonSize, buttonSize, 0x0000ff)
             .setInteractive()
             .on('pointerdown', () => this.moveRight());
     }
+
+
+
+
+
 
     moveUp() {
         // 위로 이동
