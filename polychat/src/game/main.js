@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import {MainScene} from './scenes/MainScene.js';
 import {PhaserMatterCollisionPlugin} from "phaser-matter-collision-plugin";
+import {MainMapScene} from "./scenes/MainMapScene.js";
 
 const config = {
     type: Phaser.WEBGL,
@@ -9,6 +10,7 @@ const config = {
     backgroundColor: '#bfcc00',
     scene: [
         MainScene,
+        MainMapScene,
     ],
     scale: {
         mode: Phaser.Scale.RESIZE,

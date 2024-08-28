@@ -1,12 +1,14 @@
 import { Scene } from 'phaser';
 import bodyImg from '../../ImgDocument/kakafrends.png';
 
+// MainMapScene 클래스가 이미 정의되어 있어야 합니다.
+import { MainMapScene } from './MainMapScene';  // MainMapScene이 정의된 파일의 경로에 맞게 수정하세요.
 
 export class MainScene extends Scene {
     constructor() {
         super('MainScene');
-        this.inputField = null; // 입력 필드를 관리하기 위한 변수
-        this.textTimeout = null; // 텍스트 표시 시간 제어를 위한 변수
+        this.inputField = null;
+        this.textTimeout = null;
     }
 
     preload() {
@@ -42,25 +44,23 @@ export class MainScene extends Scene {
         const buttonSize = 50;
         const padding = 10;
 
-        // 화면의 너비와 높이
         const width = this.scale.width;
         const height = this.scale.height;
 
-        // 버튼들을 화면 맨 아래에 배치 (좀 더 위쪽으로 조정)
-        const baseX = width / 2; // 중앙 정렬
+        const baseX = width / 2;
         const baseY = height - (buttonSize / 2) - padding - 100; // 화면 맨 아래에서 약간 위로
 
         // 9개의 버튼 위치 정의
         const positions = [
-            { x: baseX - (buttonSize + padding), y: baseY - (buttonSize + padding), direction: 'upLeft' },   // 좌상단 대각선
-            { x: baseX, y: baseY - (buttonSize + padding), direction: 'up' },                                 // 상
-            { x: baseX + (buttonSize + padding), y: baseY - (buttonSize + padding), direction: 'upRight' },  // 우상단 대각선
-            { x: baseX - (buttonSize + padding), y: baseY, direction: 'left' },                               // 좌
-            { x: baseX, y: baseY, direction: 'center' },                                                      // 가운데 (중앙 버튼, 기능 없음)
-            { x: baseX + (buttonSize + padding), y: baseY, direction: 'right' },                              // 우
-            { x: baseX - (buttonSize + padding), y: baseY + (buttonSize + padding), direction: 'downLeft' },  // 좌하단 대각선
-            { x: baseX, y: baseY + (buttonSize + padding), direction: 'down' },                               // 하
-            { x: baseX + (buttonSize + padding), y: baseY + (buttonSize + padding), direction: 'downRight' }  // 우하단 대각선
+            { x: baseX - (buttonSize + padding), y: baseY - (buttonSize + padding), direction: 'upLeft' },
+            { x: baseX, y: baseY - (buttonSize + padding), direction: 'up' },
+            { x: baseX + (buttonSize + padding), y: baseY - (buttonSize + padding), direction: 'upRight' },
+            { x: baseX - (buttonSize + padding), y: baseY, direction: 'left' },
+            { x: baseX, y: baseY, direction: 'center' },
+            { x: baseX + (buttonSize + padding), y: baseY, direction: 'right' },
+            { x: baseX - (buttonSize + padding), y: baseY + (buttonSize + padding), direction: 'downLeft' },
+            { x: baseX, y: baseY + (buttonSize + padding), direction: 'down' },
+            { x: baseX + (buttonSize + padding), y: baseY + (buttonSize + padding), direction: 'downRight' }
         ];
 
         // 버튼 생성 및 이벤트 설정
@@ -82,15 +82,12 @@ export class MainScene extends Scene {
     }
 
     createTextDisplayButton() {
-        // 버튼이 DOM에 추가된 후 생성되도록 약간의 딜레이를 줍니다
         setTimeout(() => {
             if (this.inputField) {
-                // 입력 필드의 위치를 기준으로 버튼을 배치
                 const inputFieldBounds = this.inputField.getBoundingClientRect();
                 const inputFieldX = inputFieldBounds.left + window.scrollX;
                 const inputFieldY = inputFieldBounds.top + window.scrollY;
 
-                // 버튼 생성
                 this.displayTextButton = this.add.rectangle(inputFieldX + this.inputField.offsetWidth + 10 + 25, inputFieldY + 15, 50, 30, 0x00ff00)
                     .setInteractive()
                     .on('pointerdown', () => this.displayText());
@@ -100,8 +97,32 @@ export class MainScene extends Scene {
                     fill: '#ffffff',
                     align: 'center'
                 }).setOrigin(0.5, 0.5);
+
+                // 씬 이동 버튼 추가
+                this.createSceneSwitchButton(inputFieldX, inputFieldY);
             }
         }, 100); // 100ms 후에 버튼 생성
+    }
+
+    createSceneSwitchButton(inputFieldX, inputFieldY) {
+        // 씬 이동 버튼 위치
+        const buttonX = inputFieldX + this.inputField.offsetWidth + 10 + 25 + 60; // 기존 버튼 오른쪽에 배치
+        const buttonY = inputFieldY + 15;
+
+        // 씬 이동 버튼 생성
+        this.sceneSwitchButton = this.add.rectangle(buttonX, buttonY, 80, 30, 0xff0000)
+            .setInteractive()
+            .on('pointerdown', () => this.switchScene());
+
+        this.add.text(buttonX, buttonY, 'Go Map', {
+            font: '16px Arial',
+            fill: '#ffffff',
+            align: 'center'
+        }).setOrigin(0.5, 0.5);
+    }
+
+    switchScene() {
+        this.scene.start('MainMapScene'); // MainMapScene으로 씬 이동
     }
 
     displayText() {
@@ -109,7 +130,6 @@ export class MainScene extends Scene {
             this.characterText.setText(this.inputField.value);
             this.inputField.value = ''; // 입력 필드 값 비우기
 
-            // 5초 후 텍스트 제거
             if (this.textTimeout) {
                 clearTimeout(this.textTimeout);
             }
@@ -134,7 +154,6 @@ export class MainScene extends Scene {
         }
     }
 
-    // 버튼을 누르면 해당 방향으로 움직이기 시작
     startMove(direction) {
         this.movingDirection = direction;
         this.isMoving = true;
@@ -145,7 +164,6 @@ export class MainScene extends Scene {
         this.isMoving = false;
     }
 
-    // 매 프레임마다 호출되는 update 함수에서 이동 처리
     update() {
         if (this.isMoving) {
             switch (this.movingDirection) {
@@ -190,27 +208,24 @@ export class MainScene extends Scene {
         if (this.inputField) {
             return;
         }
-
-        // HTML 입력 필드 생성
         this.inputField = document.createElement('input');
         this.inputField.type = 'text';
         this.inputField.style.position = 'absolute';
-        this.inputField.style.zIndex = '1'; // Phaser canvas 위에 표시되도록 설정
-        this.inputField.style.width = '200px'; // 넓이 설정
-        this.inputField.style.height = '30px'; // 높이 설정
-        this.inputField.style.borderRadius = '5px'; // 둥근 모서리
-        this.inputField.style.border = '2px solid #007bff'; // 테두리 색상
-        this.inputField.style.padding = '5px'; // 내부 여백
-        this.inputField.style.fontSize = '16px'; // 폰트 크기
-        this.inputField.style.color = '#333'; // 폰트 색상
-        this.inputField.style.backgroundColor = '#f8f9fa'; // 배경 색상
-        this.inputField.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)'; // 그림자 효과
-        this.inputField.style.textAlign = 'center'; // 텍스트 중앙 정렬
-
-        // Phaser 게임 화면의 하단 중앙에 입력 필드를 배치
+        this.inputField.style.zIndex = '1';
+        this.inputField.style.width = '200px';
+        this.inputField.style.height = '30px';
+        this.inputField.style.borderRadius = '5px';
+        this.inputField.style.border = '2px solid #007bff';
+        this.inputField.style.padding = '5px';
+        this.inputField.style.fontSize = '16px';
+        this.inputField.style.color = '#333';
+        this.inputField.style.backgroundColor = '#f8f9fa';
+        this.inputField.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
+        this.inputField.style.textAlign = 'center';
         this.inputField.style.left = `${this.scale.width / 2 - 100}px`;
-        this.inputField.style.top = `${this.scale.height - 40}px`; // 화면 하단에서 80px 위
+        this.inputField.style.top = `${this.scale.height - 40}px`;
 
         document.body.appendChild(this.inputField);
     }
 }
+
