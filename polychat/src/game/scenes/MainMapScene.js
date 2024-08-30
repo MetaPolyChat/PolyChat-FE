@@ -9,8 +9,8 @@ export class MainMapScene extends Scene {
             physics: {
                 default: 'arcade',
                 arcade: {
-                    gravity: { y: 0 },  // 중력을 0으로 설정하여 캐릭터가 떨어지지 않도록 함
-                    debug: false  // 물리 엔진 디버그 모드 비활성화
+                    gravity: { y: 0 },
+                    debug: false
                 }
             }
         });
