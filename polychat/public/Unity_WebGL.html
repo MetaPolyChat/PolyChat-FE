@@ -71,6 +71,14 @@
             z-index: 10000;
             display: none; /* 초기에는 숨김 */
         }
+
+        .kalidoFaceButtonStyle {
+            width: 100px;
+            height: 50px;
+            z-index: 100000; /* z-index를 더 높게 설정 */
+            position: relative; /* 또는 absolute로 변경하여 원하는 위치에 배치 가능 */
+        }
+
     </style>
 </head>
 <body>
@@ -185,5 +193,15 @@
     document.body.appendChild(script);
 
 </script>
+
+
+
+<script>
+    const handleGoKallidoFace = () => {
+        window.location.href = 'public/kalidoface-3d/docs/index.html';
+        console.log("커밋좀 되렴")
+    }
+</script>
+<button class="kalidoFaceButtonStyle" onclick="handleGoKallidoFace()"><h1>칼리도페이스로 이동</h1></button>
 </body>
 </html>
