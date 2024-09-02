@@ -75,10 +75,40 @@
         .kalidoFaceButtonStyle {
             width: 100px;
             height: 50px;
-            z-index: 100000; /* z-index를 더 높게 설정 */
-            position: relative; /* 또는 absolute로 변경하여 원하는 위치에 배치 가능 */
+            z-index: 100000;
+            position: absolute;
+            right: 0; /* 화면의 오른쪽 끝에 붙임 */
+            top: 50%; /* 수직으로 화면의 50% 위치에 배치 */
+            transform: translateY(-50%); /* 수직 중심에 맞춰 이동 */
+
+            /* 배경 그라데이션 */
+            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+
+            /* 테두리 및 그림자 */
+            border: none;
+            border-radius: 12px; /* 모서리 둥글게 */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
+
+            /* 텍스트 스타일 */
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center; /* 텍스트를 가운데 정렬 */
+            display: flex; /* 플렉스박스 사용 */
+            align-items: center; /* 수직 가운데 정렬 */
+            justify-content: center; /* 수평 가운데 정렬 */
+
+            /* 커서 및 애니메이션 */
+            cursor: pointer;
+            transition: all 0.3s ease; /* 부드러운 애니메이션 효과 */
         }
 
+        .kalidoFaceButtonStyle:hover {
+            /* 호버 시 효과 */
+            background: linear-gradient(135deg, #feb47b, #ff7e5f);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            transform: translate(0, -50%) scale(1.05); /* 살짝 확대되며 위로 올라가는 효과 */
+        }
     </style>
 </head>
 <body>
@@ -202,6 +232,6 @@
         console.log("커밋좀 되렴")
     }
 </script>
-<button class="kalidoFaceButtonStyle" onclick="handleGoKallidoFace()"><h1>칼리도페이스로 이동</h1></button>
+<button class="kalidoFaceButtonStyle" onclick="handleGoKallidoFace()"><h5>통화</h5></button>
 </body>
 </html>
