@@ -31,6 +31,8 @@ export const Login = () => {
             window.location.href = 'public/Unity_WebGL.html';
         };
     };
+    
+    
 
     const handleGoogleLoginFailure = (error) => {
         console.error('Google Login Failed:', error);
@@ -39,10 +41,12 @@ export const Login = () => {
 
     return (
         <div className="LoginWrapper">
+            
             <video className="BackgroundVideo" autoPlay muted loop>
                 <source src={midiaBackground} type="video/mp4" />
                 Your browser does not support the video tag.
             </video>
+            
             <div className={`LoginBackground ${isAnimating ? 'fade-out' : ''}`}>
                 <div className={`Earth ${isAnimating ? 'grow' : ''}`}></div>
                 <div className="LoginContainer">
