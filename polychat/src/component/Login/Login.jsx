@@ -28,7 +28,7 @@ export const Login = () => {
 
         // Navigate after the transition video ends
         transitionVideo.onended = () => {
-            navigate('/gamemain');
+            window.location.href = 'public/Unity_WebGL.html';
         };
     };
 

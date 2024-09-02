@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Unity Web Player | My project (2)</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100%;
+            cursor: none; /* 기본 마우스 커서를 숨깁니다 */
+        }
+
+        #unity-container {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #unity-canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        #overlay-gif {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            display: none; /* 초기에는 숨김 */
+        }
+
+        /* 하얀색 박스 제거 */
+        #unity-loading-bar {
+            background-color: transparent; /* 투명 배경으로 변경 */
+        }
+
+        #unity-progress-bar-empty {
+            background-color: transparent; /* 투명 배경으로 변경 */
+            display: none; /* 요소 숨기기 */
+        }
+
+        #unity-logo, #unity-logo-title-footer, #unity-build-title {
+            display: none;
+        }
+
+        #unity-fullscreen-button {
+            display: none;
+        }
+
+        /* 가상의 마우스 커서 스타일 */
+        #virtual-cursor {
+            width: 32px;
+            height: 32px;
+            position: absolute;
+            pointer-events: none; /* 마우스 이벤트가 가상 커서에 영향을 주지 않도록 설정 */
+            background: url('cursor-image.png') no-repeat center center;
+            background-size: contain; /* 가상 커서 이미지를 설정 (이미지 경로를 설정하세요) */
+            z-index: 10000;
+            display: none; /* 초기에는 숨김 */
+        }
+    </style>
+</head>
+<body>
+<img id="overlay-gif" src="TemplateData/StarfieldSimulation001.gif" alt="Loading...">
+
+<div id="unity-container" class="unity-desktop">
+    <canvas id="unity-canvas" width="100%" height="100%" tabindex="-1"></canvas>
+    <div id="unity-loading-bar">
+        <div id="unity-logo"></div>
+        <div id="unity-progress-bar-empty">
+            <div id="unity-progress-bar-full"></div>
+        </div>
+    </div>
+    <div id="unity-warning"> </div>
+    <div id="unity-footer">
+        <div id="unity-logo-title-footer"></div>
+        <div id="unity-fullscreen-button"></div>
+        <div id="unity-build-title">My project (2)</div>
+    </div>
+</div>
+
+<!-- 가상의 마우스 커서 -->
+<div id="virtual-cursor"></div>
+
+<script>
+    var canvas = document.querySelector("#unity-canvas");
+    var virtualCursor = document.getElementById("virtual-cursor");
+
+    function unityShowBanner(msg, type) {
+        var warningBanner = document.querySelector("#unity-warning");
+        function updateBannerVisibility() {
+            warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
+        }
+        var div = document.createElement('div');
+        div.innerHTML = msg;
+        warningBanner.appendChild(div);
+        if (type == 'error') div.style = 'background: red; padding: 10px;';
+        else {
+            if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
+            setTimeout(function() {
+                warningBanner.removeChild(div);
+                updateBannerVisibility();
+            }, 3000);
+        }
+        updateBannerVisibility();
+    }
+
+    var buildUrl = "Build";
+    var loaderUrl = buildUrl + "/Build.loader.js";
+    var config = {
+        arguments: [],
+        dataUrl: buildUrl + "/Build.data",
+        frameworkUrl: buildUrl + "/Build.framework.js",
+        codeUrl: buildUrl + "/Build.wasm",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "DefaultCompany",
+        productName: "My project (2)",
+        productVersion: "0.1.0",
+        showBanner: unityShowBanner,
+    };
+
+    document.querySelector("#unity-loading-bar").style.display = "block";
+    document.querySelector("#overlay-gif").style.display = "block"; // GIF를 표시
+
+    var script = document.createElement("script");
+    script.src = loaderUrl;
+    script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+            document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
+        }).then((unityInstance) => {
+            setTimeout(() => {
+                document.querySelector("#overlay-gif").style.display = "none"; // 3초 후 GIF 숨기기
+            }, 3000);
+
+            document.querySelector("#unity-fullscreen-button").onclick = () => {
+                unityInstance.SetFullscreen(1);
+            };
+
+            // Pointer Lock API를 사용하여 마우스 커서를 캔버스에 고정하고, 가상 커서를 표시
+            canvas.requestPointerLock = canvas.requestPointerLock || canvas.mozRequestPointerLock;
+            document.exitPointerLock = document.exitPointerLock || document.mozExitPointerLock;
+
+            canvas.onclick = function() {
+                canvas.requestPointerLock();
+            };
+
+            document.addEventListener('pointerlockchange', lockChangeAlert, false);
+            document.addEventListener('mozpointerlockchange', lockChangeAlert, false);
+
+            function lockChangeAlert() {
+                if (document.pointerLockElement === canvas || document.mozPointerLockElement === canvas) {
+                    console.log('The pointer is locked');
+                    virtualCursor.style.display = 'block'; // 가상 커서를 표시
+                    document.addEventListener('mousemove', updateVirtualCursor, false);
+                } else {
+                    console.log('The pointer is unlocked');
+                    virtualCursor.style.display = 'none'; // 가상 커서를 숨김
+                    document.removeEventListener('mousemove', updateVirtualCursor, false);
+                }
+            }
+
+            function updateVirtualCursor(event) {
+                virtualCursor.style.left = event.clientX + 'px';
+                virtualCursor.style.top = event.clientY + 'px';
+            }
+
+        }).catch((message) => {
+            alert(message);
+        });
+    };
+
+    document.body.appendChild(script);
+
+</script>
+</body>
+</html>
