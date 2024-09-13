@@ -29,6 +29,7 @@
         "@mediapipe/face_mesh": "^0.4.1633559619",
         "@mediapipe/holistic": "^0.5.1675471629",
         "@react-oauth/google": "^0.12.1",
+        "jwt-decode": "^4.0.0",
         "phaser": "3.80.1",
         "phaser-matter-collision-plugin": "^1.0.0",
         "react": "^18.3.1",
