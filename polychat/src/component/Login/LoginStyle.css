@@ -138,3 +138,80 @@ html, body {
     color: #fff;
     font-family: Arial, sans-serif;
 }
+
+.DialogBox {
+    background-color: #1E1E2A;
+    border-radius: 12px;
+    padding: 30px;
+    max-width: 400px;
+    margin: auto;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.DialogTitle {
+    color: #ffffff;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.DialogSubtitle {
+    font-size: 24px;
+    color: #ffffff;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.DialogText {
+    color: #ffffff;
+}
+
+.NicknameInput {
+    width: 100%;
+    padding: 14px;
+    border-radius: 8px;
+    border: 1px solid #444;
+    margin-bottom: 20px;
+    background-color: #2C2D38;
+    color: #ffffff;
+    font-size: 16px;
+    outline: none;
+    text-align: center;
+}
+
+.InterestsGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.InterestButton {
+    background-color: #2C2D38;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.InterestButton.selected {
+    background-color: #4A5CFF;
+}
+
+.PrevButton, .NextButton, .ConfirmButton {
+    margin-right: 10px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    background-color: #4A5CFF;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.PrevButton:hover, .NextButton:hover, .ConfirmButton:hover {
+    background-color: #6A7CFF;
+}
