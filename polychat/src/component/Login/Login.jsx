@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import './LoginStyle.css';
+import './LoginStyle.css'; // 스타일 파일 임포트
 import { useNavigate } from 'react-router-dom';
 import { GoogleLogin, googleLogout, GoogleOAuthProvider } from "@react-oauth/google";
-import midiaBackground from '../../Midia/univerBackground.mp4';
-import transitionVideoSrc from '../../Midia/InpotalMidia.mp4';
-import { jwtDecode } from 'jwt-decode';
+import midiaBackground from '../../Midia/univerBackground.mp4'; // 배경 비디오
+import transitionVideoSrc from '../../Midia/InpotalMidia.mp4'; // 전환 비디오
+import { jwtDecode } from 'jwt-decode'; // JWT 디코딩
+import axios from 'axios'; // Axios 임포트
 
 export const Login = () => {
+    // 상태 변수 정의
     const [isAnimating, setIsAnimating] = useState(false);
     const [user, setUser] = useState(null);
-    const [dialogState, setDialogState] = useState('login');
+    const [dialogState, setDialogState] = useState('login'); // 다이얼로그 상태
     const navigate = useNavigate();
     const [nickname, setNickname] = useState('');
     const [selectedInterests, setSelectedInterests] = useState([]);
 
+    // 닉네임 입력 다이얼로그
     const NicknameDialog = ({ onSubmit }) => {
         const [nicknameInput, setNicknameInput] = useState('');
 
@@ -41,6 +44,7 @@ export const Login = () => {
         );
     };
 
+    // 닉네임 확인 다이얼로그
     const ConfirmNicknameDialog = ({ nickname, onConfirm, onPrevious }) => {
         return (
             <div className="DialogBox">
@@ -52,6 +56,7 @@ export const Login = () => {
         );
     };
 
+    // 관심사 선택 다이얼로그
     const InterestsDialog = ({ onSubmit, onPrevious }) => {
         const interests = [
             '심리학', '산책', '수공예', '음악', '독서', '캘리그래피', '명상',
@@ -72,9 +77,21 @@ export const Login = () => {
             if (selectedInterests.length > 10) {
                 alert('최대 10개까지만 선택할 수 있습니다.');
             } else if (selectedInterests.length < 5) {
-                setShowErrorDialog(true); // Show error dialog if less than 5 interests are selected
+                setShowErrorDialog(true); // 관심사 선택이 부족할 경우
             } else {
-                onSubmit(selectedInterests);
+                axios.post('http://localhost:8000/admin/interest/regist', {
+                    nickname: nickname,  // 닉네임 전송
+                    interests: selectedInterests // 선택한 관심사 전송
+                })
+                    .then(response => {
+                        console.log("Interests registered:", response.data);
+                        onSubmit(selectedInterests); // 성공 시 다음 단계 진행
+                    })
+                    .catch(error => {
+                        console.error("Error registering interests:", error);
+                        alert("관심사 등록에 실패했습니다. 다시 시도해주세요.");
+                    });
+
             }
         };
 
@@ -141,7 +158,7 @@ export const Login = () => {
                     설정
                 </button>
 
-                {/* Error Dialog */}
+                {/* 오류 다이얼로그 */}
                 {showErrorDialog && (
                     <div style={{
                         position: 'fixed',
@@ -185,12 +202,10 @@ export const Login = () => {
         );
     };
 
-
-
     const clientId = '552350134054-cqkg0eudpmaa94eeqv6p2ldodjptjvei.apps.googleusercontent.com';
 
     useEffect(() => {
-        googleLogout(); // Ensure user is logged out when the component is mounted
+        googleLogout(); // 컴포넌트가 마운트될 때 사용자 로그아웃
     }, []);
 
     const handleGoogleLoginSuccess = (response) => {
@@ -201,7 +216,7 @@ export const Login = () => {
             name: decodedToken.name
         });
 
-        const isNew = true; // Replace with actual check
+        const isNew = true; // 실제 체크로 대체해야 함
         if (isNew) {
             setDialogState('nickname');
         } else {
@@ -210,14 +225,14 @@ export const Login = () => {
     };
 
     const playTransitionAndNavigate = () => {
-        setIsAnimating(true); // Start animation
+        setIsAnimating(true); // 애니메이션 시작
 
         const transitionVideo = document.getElementById('TransitionVideo');
         transitionVideo.style.display = 'block';
         transitionVideo.play();
 
         transitionVideo.onended = () => {
-            navigate('/dashboard');
+            navigate('/dashboard'); // 비디오 재생 후 대시보드로 이동
         };
     };
 
