@@ -74,25 +74,27 @@ export const Login = () => {
         };
 
         const handleSubmit = () => {
-            if (selectedInterests.length > 10) {
-                alert('최대 10개까지만 선택할 수 있습니다.');
-            } else if (selectedInterests.length < 5) {
-                setShowErrorDialog(true); // 관심사 선택이 부족할 경우
-            } else {
-                axios.post('http://localhost:8000/admin/interest/regist', {
-                    nickname: nickname,  // 닉네임 전송
-                    interests: selectedInterests // 선택한 관심사 전송
-                })
-                    .then(response => {
-                        console.log("Interests registered:", response.data);
-                        onSubmit(selectedInterests); // 성공 시 다음 단계 진행
-                    })
-                    .catch(error => {
-                        console.error("Error registering interests:", error);
-                        alert("관심사 등록에 실패했습니다. 다시 시도해주세요.");
-                    });
-
-            }
+            // if (selectedInterests.length > 10) {
+            //     alert('최대 10개까지만 선택할 수 있습니다.');
+            // } else if (selectedInterests.length < 5) {
+            //     setShowErrorDialog(true); // 관심사 선택이 부족할 경우
+            // } else {
+            //     axios.post('http://localhost:8000/admin/interest/regist', {
+            //         nickname: nickname,  // 닉네임 전송
+            //         interests: selectedInterests // 선택한 관심사 전송
+            //     })
+            //         .then(response => {
+            //             console.log("Interests registered:", response.data);
+            //             onSubmit(selectedInterests); // 성공 시 다음 단계 진행
+            //         })
+            //         .catch(error => {
+            //             console.error("Error registering interests:", error);
+            //             alert("관심사 등록에 실패했습니다. 다시 시도해주세요.");
+            //         });
+            //
+            // }
+            
+            onSubmit(selectedInterests);
         };
 
         const handleCloseErrorDialog = () => {
@@ -210,7 +212,7 @@ export const Login = () => {
 
     const handleGoogleLoginSuccess = (response) => {
         const decodedToken = jwtDecode(response.credential);
-
+        console.log(decodedToken)
         setUser({
             email: decodedToken.email,
             name: decodedToken.name
@@ -232,7 +234,8 @@ export const Login = () => {
         transitionVideo.play();
 
         transitionVideo.onended = () => {
-            navigate('/dashboard'); // 비디오 재생 후 대시보드로 이동
+            // navigate('/public/Unity_WebGL.html'); // 비디오 재생 후 대시보드로 이동
+            location.href='public/Unity_WebGL.html';
         };
     };
 
