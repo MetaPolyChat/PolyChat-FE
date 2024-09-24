@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from 'react';
 import './LoginStyle.css'; // 스타일 파일 임포트
 import { useNavigate } from 'react-router-dom';
@@ -5,7 +6,7 @@ import { GoogleLogin, googleLogout, GoogleOAuthProvider } from "@react-oauth/goo
 import midiaBackground from '../../Midia/univerBackground.mp4'; // 배경 비디오
 import transitionVideoSrc from '../../Midia/InpotalMidia.mp4'; // 전환 비디오
 import { jwtDecode } from 'jwt-decode'; // JWT 디코딩
-import axios from 'axios'; // Axios 임포트
+//import axios from 'axios'; // Axios 임포트
 
 export const Login = () => {
     // 상태 변수 정의
@@ -93,7 +94,7 @@ export const Login = () => {
             //         });
             //
             // }
-            
+
             onSubmit(selectedInterests);
         };
 
