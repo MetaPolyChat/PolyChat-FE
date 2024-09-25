@@ -45,6 +45,8 @@ export const Login = () => {
         );
     };
 
+    
+
     // 닉네임 확인 다이얼로그
     const ConfirmNicknameDialog = ({ nickname, onConfirm, onPrevious }) => {
         return (
@@ -186,7 +188,7 @@ export const Login = () => {
                             cursor: 'pointer'
                         }}>X</button>
                         <p style={{ color: '#ffffff', fontSize: '16px', marginBottom: '20px' }}>
-                            관심사를 선택하지 않았습니다.
+                            관심사를 5개 이상 선택하여 주십시오
                         </p>
                         <button onClick={handleCloseErrorDialog} style={{
                             padding: '10px 20px',
