@@ -5,8 +5,29 @@ import { useNavigate } from 'react-router-dom';
 import { GoogleLogin, googleLogout, GoogleOAuthProvider } from "@react-oauth/google";
 import midiaBackground from '../../Midia/univerBackground.mp4'; // 배경 비디오
 import transitionVideoSrc from '../../Midia/InpotalMidia.mp4'; // 전환 비디오
-import { jwtDecode } from 'jwt-decode'; // JWT 디코딩
+import { jwtDecode } from 'jwt-decode';
+import styled from 'styled-components'; // JWT 디코딩
 //import axios from 'axios'; // Axios 임포트
+
+const LoginButton = styled.button`
+    padding: 12px 24px;
+    font-size: 16px;
+    background-color: #4A5CFF;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+        background-color: #3b4fbd;
+    }
+
+    &:disabled {
+        background-color: grey;
+        cursor: not-allowed;
+    }
+`;
 
 export const Login = () => {
     // 상태 변수 정의
@@ -241,10 +262,9 @@ export const Login = () => {
             location.href='public/Unity_WebGL.html';
         };
     };
-
-    const handleGoogleLoginFailure = (error) => {
-        console.error('Google Login Failed:', error);
-        alert('Google 로그인에 실패했습니다.');
+    const moveBackEndSpringGoogleLogin = () => {
+        // Redirect to backend for Google login
+        window.location.href = 'http://localhost:8000/api/auth/google/redirect';
     };
 
     return (
@@ -258,33 +278,7 @@ export const Login = () => {
                 <div className={`Earth ${isAnimating ? 'grow' : ''}`}></div>
                 <div className="LoginContainer">
                     <div className="TitleStyle"></div>
-                    {dialogState === 'login' ? (
-                        <GoogleOAuthProvider clientId={clientId}>
-                            <GoogleLogin
-                                onSuccess={handleGoogleLoginSuccess}
-                                onFailure={handleGoogleLoginFailure}
-                            />
-                        </GoogleOAuthProvider>
-                    ) : dialogState === 'nickname' ? (
-                        <NicknameDialog onSubmit={(nickname) => {
-                            setNickname(nickname);
-                            setDialogState('confirmNickname');
-                        }} />
-                    ) : dialogState === 'confirmNickname' ? (
-                        <ConfirmNicknameDialog
-                            nickname={nickname}
-                            onConfirm={() => setDialogState('interests')}
-                            onPrevious={() => setDialogState('nickname')}
-                        />
-                    ) : (
-                        <InterestsDialog
-                            onSubmit={(interests) => {
-                                setDialogState('completed');
-                                playTransitionAndNavigate();
-                            }}
-                            onPrevious={() => setDialogState('confirmNickname')}
-                        />
-                    )}
+                    <LoginButton onClick={moveBackEndSpringGoogleLogin}>로그인</LoginButton>
                 </div>
             </div>
 
