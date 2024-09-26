@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import axios from 'axios'; // axios import 추가
 
 const ModalContainer = styled.div`
     display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
@@ -88,7 +89,7 @@ const SubmitButton = styled.button`
     }
 `;
 
-const NewBoardInput = ({ isOpen, onClose, addNewPost }) => {
+const NewBoardInput = ({ isOpen, onClose }) => {
     const [title, setTitle] = useState('');
     const [friendCode, setFriendCode] = useState('');
     const [bodyText, setBodyText] = useState('');
@@ -97,12 +98,21 @@ const NewBoardInput = ({ isOpen, onClose, addNewPost }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        addNewPost({ title, friendCode, content: bodyText, fontStyle, fontSize });
-        // Clear inputs after submission
-        setTitle('');
-        setFriendCode('');
-        setBodyText('');
-        onClose(); // Close the modal after submitting
+
+        const postData = { title, friendCode, content: bodyText, fontStyle, fontSize };
+
+        axios.post('http://localhost:8000/api/friendBoard/create', postData, {
+            headers: {
+                'Authorization': `Bearer YOUR_JWT_TOKEN` // 필요한 경우 JWT를 여기에 넣습니다.
+            }
+        })
+            .then(response => {
+                console.log('Post created:', response.data);
+                // 추가 작업 (예: 모달 닫기 등)
+            })
+            .catch(error => {
+                console.error('Error creating post:', error);
+            });
     };
 
     return (
