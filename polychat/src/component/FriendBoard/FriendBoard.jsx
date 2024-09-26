@@ -1,6 +1,8 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useState } from 'react';
+import styled, { css } from 'styled-components';
 import MoonMp4 from '../../Midia/moon.mp4';
+import BoardNoticeModal from '../FriendBoard/BoardNoticeModal.jsx';
+import NewBoardInput from './NewBoardInput.jsx';
 
 const Container = styled.div`
     width: 100%;
@@ -12,23 +14,25 @@ const Container = styled.div`
 
 const BackgroundVideo = styled.video`
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
     z-index: -1;
-    transform: translate(-50%, -50%);
 `;
 
 const Content = styled.div`
     position: relative;
     z-index: 1;
+    width: 80%;
+    max-width: 800px;
     padding: 20px;
-    height: 100%;
     box-sizing: border-box;
-    background-color: rgba(0, 0, 0, 0.5); /* Optional: To add a slight overlay */
-    color: white; /* Ensures text is visible over video */
+    background-color: rgba(115, 138, 224, 0.9);
+    border-radius: 10px;
+    color: white;
+    margin: 0 auto;
 `;
 
 const Header = styled.h1`
@@ -40,125 +44,258 @@ const Header = styled.h1`
 const SearchContainer = styled.div`
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     margin-bottom: 10px;
 `;
 
 const SearchInput = styled.input`
     width: 200px;
     padding: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+    border-radius: 10px;
+    border: none;
 `;
 
 const SearchButton = styled.button`
     padding: 5px 10px;
     margin-left: 5px;
-    border-radius: 5px;
+    border-radius: 10px;
     border: none;
-    background-color: #ffffff;
+    background-color: white;
     cursor: pointer;
 `;
 
-const Table = styled.table`
+const WriteButton = styled.button`
+    padding: 5px 10px;
+    margin-left: 10px;
+    border-radius: 10px;
+    border: none;
+    background-color: white;
+    cursor: pointer;
+`;
+
+const ResetButton = styled.button`
+    padding: 5px 10px;
+    margin-left: 10px;
+    border-radius: 10px;
+    border: none;
+    background-color: #ff6b6b;
+    color: white;
+    cursor: pointer;
+`;
+
+const Table = styled.div`
     width: 100%;
-    border-collapse: collapse;
     margin-bottom: 10px;
 `;
 
-const TableHeader = styled.th`
-    background-color: #37447e;
-    color: white;
-    padding: 10px;
-    border-bottom: 1px solid #3b7dbf;
-`;
-
-const TableRow = styled.tr`
+const TableRow = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     background-color: #3b7dbf;
     color: white;
-    &:nth-child(even) {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+
+    ${(props) =>
+        props.notice &&
+        css`
+            background-color: #6b90d4;
+        `}
+
+    &:hover {
         background-color: #2b8dd0;
     }
 `;
 
-const TableData = styled.td`
+const TableHeader = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #37447e;
+    color: white;
     padding: 10px;
-    text-align: center;
+    border-radius: 10px;
 `;
 
-const Pagination = styled.div`
+const TableData = styled.div`
+    text-align: center;
+    width: 25%;
+`;
+
+const Pagination = styled.ul`
     display: flex;
     justify-content: center;
-    margin-top: 10px;
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+    color: white;
 `;
 
-const PageNumber = styled.span`
+const PageItem = styled.li`
     margin: 0 5px;
-    cursor: pointer;
-    &:hover {
-        color: #bbb;
-    }
-`;
-
-const WriteButton = styled.button`
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    padding: 10px 20px;
+    padding: 5px 10px;
     border-radius: 5px;
-    border: none;
-    background-color: #ffffff;
+    background-color: #37447e;
     cursor: pointer;
+
+    &:hover {
+        background-color: #2b8dd0;
+    }
+
+    ${(props) =>
+        props.active &&
+        css`
+            background-color: #6b90d4;
+            font-weight: bold;
+        `}
 `;
 
 const FriendBoard = () => {
+    const [currentPage, setCurrentPage] = useState(1);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isNewBoardInputOpen, setIsNewBoardInputOpen] = useState(false);
+    const [selectedPost, setSelectedPost] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filteredPosts, setFilteredPosts] = useState([]);
+    const [posts, setPosts] = useState([
+        { id: "#", title: '작성 공지', author: '관리자', date: '2024-09-26', content: '공지사항 내용', isAdmin: true },
+        { id: 1, title: '동렬맨 키보드에 커피 올리다', author: '시바견', date: '2024-09-25', content: '춘식이가 기뻐합니다', isAdmin: false }, // Add content here
+    ]);
+
+    const postsPerPage = 10;
+
+    // Separate admin posts and user posts
+    const adminPosts = posts.filter(post => post.isAdmin);
+    const userPosts = filteredPosts.length > 0 ? filteredPosts : posts.filter(post => !post.isAdmin);
+
+    // Get posts for the current page
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    const currentPosts = userPosts.slice(indexOfFirstPost, indexOfFirstPost + postsPerPage);
+
+    // Calculate total pages
+    const totalPages = Math.ceil(userPosts.length / postsPerPage);
+
+    // Page change handler
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+    // Open modal handler
+    const handleRowClick = (post) => {
+        setSelectedPost(post);
+        setIsModalOpen(true);
+    };
+
+    // Close modal handler
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        setSelectedPost(null);
+    };
+
+    // Handle search
+    const handleSearch = () => {
+        const searchResults = posts.filter(post => post.title.includes(searchTerm) && !post.isAdmin);
+        setFilteredPosts(searchResults);
+        setCurrentPage(1);
+    };
+
+    // Handle reset
+    const handleReset = () => {
+        setFilteredPosts([]);
+        setSearchTerm('');
+        setCurrentPage(1);
+    };
+
+    // Open NewBoardInput modal
+    const handleWriteButtonClick = () => {
+        setIsNewBoardInputOpen(true);
+    };
+
+    // Close NewBoardInput modal
+    const handleCloseNewBoardInput = () => {
+        setIsNewBoardInputOpen(false);
+    };
+
+    // Handle new post submission
+    const handleAddPost = (newPost) => {
+        setPosts((prevPosts) => [
+            ...prevPosts,
+            { id: prevPosts.length + 1, ...newPost, date: new Date().toISOString().split('T')[0], isAdmin: false, content: newPost.content }, // Ensure content is included
+        ]);
+        setIsNewBoardInputOpen(false);
+    };
+
+
     return (
         <Container>
             <BackgroundVideo autoPlay loop muted>
                 <source src={MoonMp4} type="video/mp4" />
-                Your browser does not support the video tag.
             </BackgroundVideo>
             <Content>
                 <Header>PolyChat</Header>
                 <SearchContainer>
-                    <SearchInput placeholder="Search..." />
-                    <SearchButton>검색</SearchButton>
+                    <SearchInput
+                        placeholder="검색"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                    <SearchButton onClick={handleSearch}>검색</SearchButton>
+                    <WriteButton onClick={handleWriteButtonClick}>작성</WriteButton> {/* Open NewBoardInput */}
+                    <ResetButton onClick={handleReset}>원상복귀</ResetButton>
                 </SearchContainer>
                 <Table>
-                    <thead>
-                    <tr>
-                        <TableHeader>번호</TableHeader>
-                        <TableHeader>제목</TableHeader>
-                        <TableHeader>이름</TableHeader>
-                        <TableHeader>날짜</TableHeader>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <TableRow>
-                        <TableData>#</TableData>
-                        <TableData>작성 공지</TableData>
-                        <TableData>신창섭</TableData>
-                        <TableData>2024-04-04</TableData>
-                    </TableRow>
-                    <TableRow>
-                        <TableData>1</TableData>
-                        <TableData>동력맨 키보드에 커피 올리다</TableData>
-                        <TableData>시바견</TableData>
-                        <TableData>2024-09-25</TableData>
-                    </TableRow>
-                    </tbody>
+                    <TableHeader>
+                        <TableData>번호</TableData>
+                        <TableData>제목</TableData>
+                        <TableData>이름</TableData>
+                        <TableData>날짜</TableData>
+                    </TableHeader>
+                    {adminPosts.map((post) => (
+                        <TableRow
+                            key={post.id}
+                            notice={post.id === "#"}
+                            onClick={() => handleRowClick(post)}
+                        >
+                            <TableData>#</TableData>
+                            <TableData>{post.title}</TableData>
+                            <TableData>{post.author}</TableData>
+                            <TableData>{post.date}</TableData>
+                        </TableRow>
+                    ))}
+                    {currentPosts.map((post, index) => (
+                        <TableRow
+                            key={post.id}
+                            onClick={() => handleRowClick(post)}
+                        >
+                            <TableData>{indexOfFirstPost + index + 1}</TableData>
+                            <TableData>{post.title}</TableData>
+                            <TableData>{post.author}</TableData>
+                            <TableData>{post.date}</TableData>
+                        </TableRow>
+                    ))}
                 </Table>
                 <Pagination>
-                    {Array.from({ length: 10 }, (_, i) => (
-                        <PageNumber key={i + 1}>{i + 1}</PageNumber>
+                    {Array.from({ length: totalPages }, (_, i) => (
+                        <PageItem
+                            key={i + 1}
+                            active={i + 1 === currentPage}
+                            onClick={() => paginate(i + 1)}
+                        >
+                            {i + 1}
+                        </PageItem>
                     ))}
                 </Pagination>
-                <WriteButton>작성</WriteButton>
             </Content>
+            <BoardNoticeModal isOpen={isModalOpen} onClose={handleCloseModal} post={selectedPost} />
+            <NewBoardInput
+                isOpen={isNewBoardInputOpen}
+                onClose={handleCloseNewBoardInput}
+                onAddPost={handleAddPost}
+            />
         </Container>
     );
 };
 
 export default FriendBoard;
-
-
-
