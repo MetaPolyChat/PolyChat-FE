@@ -162,7 +162,8 @@ const FriendBoard = () => {
     const [filteredPosts, setFilteredPosts] = useState([]);
     const [posts, setPosts] = useState([
         { id: "#", title: '작성 공지', author: '관리자', date: '2024-09-26', content: '공지사항 내용', isAdmin: true },
-        { id: 1, title: '동렬맨 키보드에 커피 올리다', author: '시바견', date: '2024-09-25', content: '춘식이가 기뻐합니다', isAdmin: false }, // Add content here
+        { id: 1, title: '동렬맨 키보드에 커피 올리다', author: '시바견', date: '2024-09-25', content: '춘식이가 기뻐합니다', isAdmin: false },
+        { id: 2, title: '재호형의 몰루춤', author: '다크템플러', date: '2024-09-27', content: '아둔 토리다스', isAdmin: false },
     ]);
 
     const postsPerPage = 10;

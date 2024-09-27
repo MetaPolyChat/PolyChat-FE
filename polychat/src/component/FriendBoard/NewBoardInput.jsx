@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import axios from 'axios'; // axios import 추가
+import axios from 'axios';
 
 const ModalContainer = styled.div`
     display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
@@ -16,10 +16,11 @@ const ModalContainer = styled.div`
 `;
 
 const ModalContent = styled.div`
-    background: white;
-    border-radius: 10px;
+    background: #d5e4ff;
+    border-radius: 20px;
     padding: 20px;
-    width: 400px;
+    width: 350px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     position: relative;
 `;
 
@@ -29,60 +30,53 @@ const CloseButton = styled.button`
     right: 10px;
     border: none;
     background: none;
-    font-size: 20px;
+    font-size: 24px;
+    color: #ffffff;
     cursor: pointer;
 `;
 
-const TitleInput = styled.input`
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+const Title = styled.h2`
+    text-align: center;
+    margin-bottom: 20px;
+    color: #ffffff;
 `;
 
-const FriendCodeInput = styled.input`
+const InputField = styled.input`
     width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    padding: 12px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 10px;
+    background-color: #ffffff;
+    color: #555;
+    font-size: 16px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
 `;
 
-const FontStyleSelect = styled.select`
+const TextAreaField = styled.textarea`
     width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-`;
-
-const FontSizeSelect = styled.select`
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-`;
-
-const BodyTextArea = styled.textarea`
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    height: 100px;
+    padding: 12px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 10px;
+    background-color: #ffffff;
+    color: #555;
+    font-size: 16px;
+    height: 120px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
 `;
 
 const SubmitButton = styled.button`
     width: 100%;
-    padding: 10px;
+    padding: 12px;
+    margin-top: 10px;
     background-color: #007bff;
-    color: white;
+    color: #ffffff;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
+    font-size: 18px;
     cursor: pointer;
-    font-size: 16px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
 
     &:hover {
         background-color: #0056b3;
@@ -91,63 +85,68 @@ const SubmitButton = styled.button`
 
 const NewBoardInput = ({ isOpen, onClose }) => {
     const [title, setTitle] = useState('');
+    const [nickname, setNickname] = useState('');
+    const [date, setDate] = useState('');
     const [friendCode, setFriendCode] = useState('');
     const [bodyText, setBodyText] = useState('');
-    const [fontStyle, setFontStyle] = useState('Arial');
-    const [fontSize, setFontSize] = useState('16px');
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const postData = { title, friendCode, content: bodyText, fontStyle, fontSize };
+        const postData = {
+            board_title: title,
+            writer: nickname,
+            board_content: bodyText,
+            planet: friendCode,
+        };
 
-        axios.post('http://localhost:8000/api/friendBoard/create', postData, {
-            headers: {
-                'Authorization': `Bearer YOUR_JWT_TOKEN` // 필요한 경우 JWT를 여기에 넣습니다.
-            }
-        })
+        axios.post('http://localhost:8000/api/friendBoard/create', postData)
             .then(response => {
                 console.log('Post created:', response.data);
-                // 추가 작업 (예: 모달 닫기 등)
             })
             .catch(error => {
                 console.error('Error creating post:', error);
             });
     };
 
+
+
+
     return (
         <ModalContainer isOpen={isOpen}>
             <ModalContent>
                 <CloseButton onClick={onClose}>×</CloseButton>
-                <h2>새 게시물 작성</h2>
+                <Title>새 게시물 작성</Title>
                 <form onSubmit={handleSubmit}>
-                    <TitleInput
+                    <InputField
                         type="text"
                         placeholder="제목"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                         required
                     />
-                    <FriendCodeInput
+                    <InputField
                         type="text"
-                        placeholder="친구 코드"
+                        placeholder="닉네임"
+                        value={nickname}
+                        onChange={(e) => setNickname(e.target.value)}
+                        required
+                    />
+                    <InputField
+                        type="date"
+                        placeholder="날짜"
+                        value={date}
+                        onChange={(e) => setDate(e.target.value)}
+                        required
+                    />
+                    <InputField
+                        type="text"
+                        placeholder="친구코드"
                         value={friendCode}
                         onChange={(e) => setFriendCode(e.target.value)}
                         required
                     />
-                    <FontStyleSelect value={fontStyle} onChange={(e) => setFontStyle(e.target.value)}>
-                        <option value="Arial">Arial</option>
-                        <option value="Courier New">Courier New</option>
-                        <option value="Georgia">Georgia</option>
-                        <option value="Times New Roman">Times New Roman</option>
-                    </FontStyleSelect>
-                    <FontSizeSelect value={fontSize} onChange={(e) => setFontSize(e.target.value)}>
-                        <option value="16px">16px</option>
-                        <option value="20px">20px</option>
-                        <option value="24px">24px</option>
-                        <option value="28px">28px</option>
-                    </FontSizeSelect>
-                    <BodyTextArea
+                    <TextAreaField
                         placeholder="내용"
                         value={bodyText}
                         onChange={(e) => setBodyText(e.target.value)}
