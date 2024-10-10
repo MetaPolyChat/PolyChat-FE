@@ -2,13 +2,15 @@ import {useRoutes} from "react-router-dom";
 import {Login} from "../component/Login/Login.jsx";
 import { LoginButton } from '../component/test/LoginButton.jsx';
 import FriendBoard from '../component/FriendBoard/FriendBoard.jsx';
+import { CreateAccount } from '../component/createAccount/CreateAccount.jsx';
 
 export const Routers = () => {
     return useRoutes(
         [
             {path:"/",element:<Login/>},
             {path:"/testGoogle",element:<LoginButton/>},
-            {path:"/friendboard",element:<FriendBoard/>},
+            {path:"/friendBoard",element:<FriendBoard/>},
+            {path:"/createAccount",element:<CreateAccount/>}
         ]
     )
 }
