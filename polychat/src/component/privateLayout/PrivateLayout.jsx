@@ -1,19 +1,30 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const LayoutContainer = styled.div`
-  display: flex;
-  height: 100vh;
-  color: white;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    color: white;
 `;
 
-const Sidebar = styled.div`
-  width: 200px;
-  background-color: rgba(0, 0, 0, 0.7);
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
+const Toolbar = styled.div`
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+`;
+
+const ToolbarItem = styled(Link)`
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 5px;
+    }
 `;
 
 const Content = styled.div`
@@ -26,12 +37,15 @@ const Content = styled.div`
 export const PrivateLayout = () => {
     return (
         <LayoutContainer>
-            <Sidebar>
-                <p>Sidebar Navigation</p>
-                {/* Sidebar Navigation Options */}
-            </Sidebar>
+            {/* Toolbar Navigation */}
+            <Toolbar>
+                <ToolbarItem to="/friendBoard">친구 찾기 게시판</ToolbarItem>
+                <ToolbarItem to="/unityBuild">내 방으로</ToolbarItem>
+            </Toolbar>
+
+            {/* Content area for Outlet */}
             <Content>
-                <Outlet /> {/* This will render pages like FriendBoard */}
+                <Outlet /> {/* This will render pages like FriendBoard or UnityComponent */}
             </Content>
         </LayoutContainer>
     );

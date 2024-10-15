@@ -42,18 +42,36 @@ const Button = styled.button`
     }
 `;
 
+const ErrorMessage = styled.p`
+    color: red;
+    font-size: 0.9em;
+`;
+
 export const CreateAccount = () => {
     const [nickname, setNickname] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
     const handleNicknameChange = (e) => {
-        setNickname(e.target.value);
+        const value = e.target.value;
+        setNickname(value);
+
+        // 정규식: 숫자 및 특수문자가 포함되었는지 확인
+        const hasInvalidChar = /[^a-zA-Z가-힣]/;
+        if (hasInvalidChar.test(value)) {
+            setError('닉네임에는 숫자나 특수문자를 포함할 수 없습니다.');
+        } else {
+            setError('');
+        }
     };
 
     const handleSubmit = () => {
         if (nickname === '') {
             setError('닉네임을 입력해주세요.');
+            return;
+        }
+        if (/[^a-zA-Z가-힣]/.test(nickname)) {
+            setError('닉네임에는 숫자나 특수문자를 포함할 수 없습니다.');
             return;
         }
         setError('');
@@ -77,10 +95,11 @@ export const CreateAccount = () => {
                 value={nickname}
                 onChange={handleNicknameChange}
             />
+            {error && <ErrorMessage>{error}</ErrorMessage>}
             <Button
                 type="submit"
                 onClick={handleSubmit}
-                disabled={nickname === ''}
+                disabled={nickname === '' || error !== ''}
             >
                 다음
             </Button>

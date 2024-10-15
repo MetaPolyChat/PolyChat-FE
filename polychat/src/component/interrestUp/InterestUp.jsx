@@ -14,7 +14,7 @@ const Container = styled.div`
     color: white;
     text-align: center;
     backdrop-filter: blur(5px);
-    z-index: 1;  /* Content stays above the background */
+    z-index: 1;
 `;
 
 const CheckboxContainer = styled.div`
@@ -67,11 +67,42 @@ const Button = styled.button`
     }
 `;
 
-export const InterestUp = () => {
+const ModalBackground = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+`;
+
+const ModalContent = styled.div`
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+`;
+
+const ModalButton = styled.button`
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background: #007BFF;
+    color: white;
+    cursor: pointer;
+`;
+
+const InterestUp = () => {
     const location = useLocation();
     const nickname = location.state?.nickname || '';
     const [selectedInterests, setSelectedInterests] = useState([]);
     const [error, setError] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleInterestChange = (interest) => {
         setSelectedInterests((prevSelected) => {
@@ -87,6 +118,7 @@ export const InterestUp = () => {
     const handleSubmit = () => {
         if (selectedInterests.length < 5 || selectedInterests.length > 10) {
             setError('관심사를 최소 5개에서 최대 10개까지 선택해주세요.');
+            setIsModalOpen(true);
             return;
         }
         setError('');
@@ -103,9 +135,14 @@ export const InterestUp = () => {
             });
     };
 
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
     return (
         <Container>
             <h2>관심사를 선택하세요 (최소 5개, 최대 10개)</h2>
+            <p>선택된 관심사: {selectedInterests.length} / 10</p> {/* 선택된 관심사 숫자 표시 */}
             <CheckboxContainer>
                 {interestsList.map((interest) => (
                     <CheckboxLabel
@@ -121,7 +158,6 @@ export const InterestUp = () => {
                     </CheckboxLabel>
                 ))}
             </CheckboxContainer>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
             <Button
                 type="submit"
                 onClick={handleSubmit}
@@ -129,6 +165,17 @@ export const InterestUp = () => {
             >
                 완료
             </Button>
+
+            {isModalOpen && (
+                <ModalBackground>
+                    <ModalContent>
+                        <p>{error}</p>
+                        <ModalButton onClick={closeModal}>확인</ModalButton>
+                    </ModalContent>
+                </ModalBackground>
+            )}
         </Container>
     );
 };
+
+export default InterestUp;
