@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Unity Web Player | My project (2)</title>
-    <link rel="shortcut icon" href="../../../../Downloads/unitywenb/TemplateData/favicon.ico">
-    <link rel="stylesheet" href="../../../../Downloads/unitywenb/TemplateData/style.css">
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
   </head>
   <body>
     <div id="unity-container" class="unity-desktop">
@@ -52,12 +52,12 @@
       }
 
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/Documents.loader.js";
+      var loaderUrl = buildUrl + "/Web.loader.js";
       var config = {
         arguments: [],
-        dataUrl: buildUrl + "/Documents.data",
-        frameworkUrl: buildUrl + "/Documents.framework.js",
-        codeUrl: buildUrl + "/Documents.wasm",
+        dataUrl: buildUrl + "/Web.data",
+        frameworkUrl: buildUrl + "/Web.framework.js",
+        codeUrl: buildUrl + "/Web.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
         productName: "My project (2)",
