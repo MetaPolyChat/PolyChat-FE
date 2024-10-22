@@ -89,14 +89,14 @@ export const CreateAccount = () => {
 
         // JSON 데이터를 POST로 전송
         axios.post('http://localhost:8000/api/auth/google/signup', {
+            userId: userId,
             nickname: nickname,
-            userId: userId
         })
             .then(response => {
-                console.log(response.data);
+                console.log("Response:", response.data);
             })
             .catch(error => {
-                console.log("데이터를 보내는데 실패하였습니다.", error);
+                console.log("못보냇다 시발");
             });
     };
 
