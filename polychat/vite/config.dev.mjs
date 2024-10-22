@@ -3,12 +3,12 @@ import react from '@vitejs/plugin-react'
 import path from 'path';
 import fs from 'fs';
 
-// https 전환 인증서 => 혹시 몰라서 안지움
-//const keyPath = path.resolve(__dirname, '../https/localhost-key.pem');
-//const certPath = path.resolve(__dirname, '../https/localhost.pem');
+// https 전환
+// const keyPath = path.resolve(__dirname, '../https/localhost-key.pem');
+// const certPath = path.resolve(__dirname, '../https/localhost.pem');
 // console.log("Key Path: ", keyPath);
 // console.log("Cert Path: ", certPath);
-
+//
 // export default defineConfig({
 //     base: './',
 //     plugins: [
@@ -24,6 +24,9 @@ import fs from 'fs';
 //     },
 // })
 
+
+
+// http 변환
 export default defineConfig({
     base: './',
     plugins: [

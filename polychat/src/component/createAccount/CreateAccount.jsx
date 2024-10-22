@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Container = styled.div`
@@ -31,7 +31,7 @@ const Button = styled.button`
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
-    background: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.4);  // active에 따른 배경색 변경 제거
     color: white;
     font-size: 1em;
     cursor: pointer;
@@ -42,6 +42,7 @@ const Button = styled.button`
     }
 `;
 
+
 const ErrorMessage = styled.p`
     color: red;
     font-size: 0.9em;
@@ -51,12 +52,17 @@ export const CreateAccount = () => {
     const [nickname, setNickname] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const location = useLocation();
+
+    // URL에서 userId 가져오기
+    const searchParams = new URLSearchParams(location.search);
+    const userId = searchParams.get('userId'); // '1'을 가져옵니다.
 
     const handleNicknameChange = (e) => {
         const value = e.target.value;
         setNickname(value);
 
-        // 정규식: 숫자 및 특수문자가 포함되었는지 확인
+        // Check for special characters or numbers
         const hasInvalidChar = /[^a-zA-Z가-힣]/;
         if (hasInvalidChar.test(value)) {
             setError('닉네임에는 숫자나 특수문자를 포함할 수 없습니다.');
@@ -76,12 +82,20 @@ export const CreateAccount = () => {
         }
         setError('');
 
-        axios.post('https://your-api-url.com/api/validateNickname', { nickname })
-            .then(() => {
-                navigate('/interests', { state: { nickname } });
+        // 콘솔로 값 확인
+        console.log("nickname :: " + nickname);
+        console.log("userId :: " + userId);
+
+        // JSON 데이터를 POST로 전송
+        axios.post('http://localhost:8000/api/auth/google/signup', {
+            nickname: nickname,
+            userId: userId
+        })
+            .then(response => {
+                console.log(response.data);
             })
-            .catch((error) => {
-                console.error('Error validating nickname', error);
+            .catch(error => {
+                console.log("데이터를 보내는데 실패하였습니다.", error);
             });
     };
 
