@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Modal from 'react-modal';
 
 //CSS
 const Container = styled.div`
@@ -32,7 +33,7 @@ const Button = styled.button`
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
-    background: rgba(255, 255, 255, 0.4);  // active에 따른 배경색 변경 제거
+    background: rgba(255, 255, 255, 0.4);
     color: white;
     font-size: 1em;
     cursor: pointer;
@@ -43,21 +44,33 @@ const Button = styled.button`
     }
 `;
 
-
 const ErrorMessage = styled.p`
     color: red;
     font-size: 0.9em;
 `;
 
+const ModalButton = styled.button`
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.4);
+    color: white;
+    font-size: 1em;
+    cursor: pointer;
+`;
+
 export const CreateAccount = () => {
     const [nickname, setNickname] = useState('');
     const [error, setError] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
 
     // URL에서 userId 가져오기
     const searchParams = new URLSearchParams(location.search);
-    const userId = searchParams.get('userId'); // '1'을 가져옵니다.
+    const userId = searchParams.get('userId');
 
     const handleNicknameChange = (e) => {
         const value = e.target.value;
@@ -83,21 +96,24 @@ export const CreateAccount = () => {
         }
         setError('');
 
-        // 콘솔로 값 확인
-        console.log("nickname :: " + nickname);
-        console.log("userId :: " + userId);
-
-        // JSON 데이터를 POST로 전송
         axios.post('http://localhost:8000/api/auth/google/signup', {
             userId: userId,
             nickname: nickname,
         })
             .then(response => {
                 console.log("Response:", response.data);
+                setIsModalOpen(true); // 모달창 열기
+                setIsButtonDisabled(true); // 버튼 비활성화
             })
             .catch(error => {
-                console.log("못보냇다 시발");
+                console.error("Error:", error);
+                setError("서버와의 통신에 실패했습니다.");
             });
+    };
+
+    const handleInterestUp = () => {
+        setIsModalOpen(false); // 모달창 닫기
+        navigate('/interestUp'); // 다음 페이지로 이동
     };
 
     return (
@@ -109,15 +125,41 @@ export const CreateAccount = () => {
                 placeholder="닉네임"
                 value={nickname}
                 onChange={handleNicknameChange}
+                disabled={isButtonDisabled}
             />
             {error && <ErrorMessage>{error}</ErrorMessage>}
             <Button
                 type="submit"
                 onClick={handleSubmit}
-                disabled={nickname === '' || error !== ''}
+                disabled={nickname === '' || error !== '' || isButtonDisabled}
             >
                 다음
             </Button>
+
+            {/* 모달창 구현 */}
+            <Modal
+                isOpen={isModalOpen}
+                onRequestClose={() => setIsModalOpen(false)}
+                contentLabel="Success Modal"
+                style={{
+                    overlay: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.75)',
+                    },
+                    content: {
+                        color: 'white',
+                        textAlign: 'center',
+                        background: 'rgba(0, 0, 0, 0.8)',
+                        border: 'none',
+                        borderRadius: '10px',
+                        padding: '20px',
+                        maxWidth: '500px',
+                        margin: 'auto',
+                    },
+                }}
+            >
+                <h2>정상적으로 처리되었습니다!</h2>
+                <ModalButton onClick={handleInterestUp}>다음 단계로 이동</ModalButton>
+            </Modal>
         </Container>
     );
 };
