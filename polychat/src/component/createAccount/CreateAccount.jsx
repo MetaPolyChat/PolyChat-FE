@@ -14,6 +14,7 @@ const Container = styled.div`
     color: white;
     text-align: center;
     backdrop-filter: blur(5px);
+    background: none;
 `;
 
 const Input = styled.input`
@@ -24,7 +25,7 @@ const Input = styled.input`
     font-size: 1em;
     width: 80%;
     max-width: 400px;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
     color: white;
 `;
 
@@ -33,7 +34,7 @@ const Button = styled.button`
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
-    background: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.2);
     color: white;
     font-size: 1em;
     cursor: pointer;
@@ -54,11 +55,43 @@ const ModalButton = styled.button`
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
-    background: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.2);
     color: white;
     font-size: 1em;
     cursor: pointer;
 `;
+
+const ModalContent = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+`;
+
+// Modal Styles
+const customModalStyles = {
+    overlay: {
+        backgroundColor: 'rgba(0, 0, 0, 0.75)',
+        zIndex: 1000, // Ensures modal appears above other elements
+    },
+    content: {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)', // Centers the modal
+        color: 'white',
+        textAlign: 'center',
+        background: 'rgba(0, 0, 0, 0.8)',
+        border: 'none',
+        borderRadius: '10px',
+        padding: '20px',
+        maxWidth: '500px',
+        width: '90%',
+        zIndex: 1001,
+    },
+};
 
 export const CreateAccount = () => {
     const [nickname, setNickname] = useState('');
@@ -68,7 +101,7 @@ export const CreateAccount = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    // URL에서 userId 가져오기
+    // Extract userId from the URL
     const searchParams = new URLSearchParams(location.search);
     const userId = searchParams.get('userId');
 
@@ -76,7 +109,6 @@ export const CreateAccount = () => {
         const value = e.target.value;
         setNickname(value);
 
-        // Check for special characters or numbers
         const hasInvalidChar = /[^a-zA-Z가-힣]/;
         if (hasInvalidChar.test(value)) {
             setError('닉네임에는 숫자나 특수문자를 포함할 수 없습니다.');
@@ -102,8 +134,8 @@ export const CreateAccount = () => {
         })
             .then(response => {
                 console.log("Response:", response.data);
-                setIsModalOpen(true); // 모달창 열기
-                setIsButtonDisabled(true); // 버튼 비활성화
+                setIsModalOpen(true); // Open modal
+                setIsButtonDisabled(true); // Disable button
             })
             .catch(error => {
                 console.error("Error:", error);
@@ -112,8 +144,9 @@ export const CreateAccount = () => {
     };
 
     const handleInterestUp = () => {
-        setIsModalOpen(false); // 모달창 닫기
-        navigate('/interestUp'); // 다음 페이지로 이동
+        setIsModalOpen(false); // Close modal
+        // Navigate to the next page while preserving userId
+        navigate(`/interest-up?userId=${userId}`);
     };
 
     return (
@@ -136,29 +169,17 @@ export const CreateAccount = () => {
                 다음
             </Button>
 
-            {/* 모달창 구현 */}
+            {/* Modal Implementation */}
             <Modal
                 isOpen={isModalOpen}
                 onRequestClose={() => setIsModalOpen(false)}
                 contentLabel="Success Modal"
-                style={{
-                    overlay: {
-                        backgroundColor: 'rgba(0, 0, 0, 0.75)',
-                    },
-                    content: {
-                        color: 'white',
-                        textAlign: 'center',
-                        background: 'rgba(0, 0, 0, 0.8)',
-                        border: 'none',
-                        borderRadius: '10px',
-                        padding: '20px',
-                        maxWidth: '500px',
-                        margin: 'auto',
-                    },
-                }}
+                style={customModalStyles}
             >
-                <h2>정상적으로 처리되었습니다!</h2>
-                <ModalButton onClick={handleInterestUp}>다음 단계로 이동</ModalButton>
+                <ModalContent>
+                    <h2>정상적으로 처리되었습니다!</h2>
+                    <ModalButton onClick={handleInterestUp}>다음 단계로 이동</ModalButton>
+                </ModalContent>
             </Modal>
         </Container>
     );

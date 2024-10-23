@@ -78,6 +78,10 @@ export const PublicLayout = () => {
         interestUp: false,
     });
 
+    const lockCreateAccountStep = () => {
+        setLockedSteps((prev) => ({ ...prev, createAccount: true }));
+    };
+
     const handleNextStep = () => {
         // Lock the current step based on the location
         if (location.pathname === '/createAccount') {
@@ -96,26 +100,10 @@ export const PublicLayout = () => {
     return (
         <>
             <LayoutContainer>
-                {/* Sidebar for navigation */}
-                <Sidebar>
-                    <NavButton
-                        onClick={() => navigate('/createAccount')}
-                        active={isCreateAccountActive}
-                        disabled={lockedSteps.createAccount}
-                    >
-                        Create Account
-                    </NavButton>
-                    <NavButton
-                        onClick={() => navigate('/interestUp')}
-                        active={isInterestUpActive}
-                        disabled={lockedSteps.interestUp}
-                    >
-                        Select Interests
-                    </NavButton>
-                </Sidebar>
                 <ContentContainer>
                     <ContentWrapper>
-                        <Outlet />
+                        {/* Pass the lockCreateAccountStep function to the CreateAccount component */}
+                        <Outlet context={{ lockCreateAccountStep }} />
                     </ContentWrapper>
                 </ContentContainer>
             </LayoutContainer>

@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import styled, { css } from 'styled-components';
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import axios from 'axios';
 import MoonMp4 from '../../Midia/moon.mp4';
 import BoardNoticeModal from '../FriendBoard/BoardNoticeModal.jsx';
 import NewBoardInput from './NewBoardInput.jsx';
@@ -99,12 +100,6 @@ const TableRow = styled.div`
     border-radius: 10px;
     cursor: pointer;
 
-    ${(props) =>
-        props.notice &&
-        css`
-            background-color: #6b90d4;
-        `}
-
     &:hover {
         background-color: #2b8dd0;
     }
@@ -147,7 +142,7 @@ const PageItem = styled.li`
 
     ${(props) =>
         props.active &&
-        css`
+        `
             background-color: #6b90d4;
             font-weight: bold;
         `}
@@ -156,78 +151,66 @@ const PageItem = styled.li`
 const FriendBoard = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isNewBoardInputOpen, setIsNewBoardInputOpen] = useState(false);
+    const [isNewBoardInputOpen, setIsNewBoardInputOpen] = useState(false); // State for the "New Post" modal
     const [selectedPost, setSelectedPost] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredPosts, setFilteredPosts] = useState([]);
-    const [posts, setPosts] = useState([
-        { id: "#", title: '작성 공지', author: '관리자', date: '2024-09-26', content: '공지사항 내용', isAdmin: true },
-        { id: 1, title: '동렬맨 키보드에 커피 올리다', author: '시바견', date: '2024-09-25', content: '춘식이가 기뻐합니다', isAdmin: false },
-        { id: 2, title: '재호형의 몰루춤', author: '다크템플러', date: '2024-09-27', content: '아둔 토리다스', isAdmin: false },
-    ]);
+    const [posts, setPosts] = useState([]);
 
     const postsPerPage = 10;
 
-    // Separate admin posts and user posts
-    const adminPosts = posts.filter(post => post.isAdmin);
-    const userPosts = filteredPosts.length > 0 ? filteredPosts : posts.filter(post => !post.isAdmin);
-
-    // Get posts for the current page
-    const indexOfLastPost = currentPage * postsPerPage;
-    const indexOfFirstPost = indexOfLastPost - postsPerPage;
-    const currentPosts = userPosts.slice(indexOfFirstPost, indexOfFirstPost + postsPerPage);
-
-    // Calculate total pages
-    const totalPages = Math.ceil(userPosts.length / postsPerPage);
-
-    // Page change handler
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-    // Open modal handler
-    const handleRowClick = (post) => {
-        setSelectedPost(post);
-        setIsModalOpen(true);
+    // Fetch posts from backend (API call)
+    const fetchPosts = async () => {
+        try {
+            const response = await axios.get('http://localhost:8000/api/friendBoard/listView');
+            const postsWithFormattedDates = response.data.map(post => ({
+                ...post,
+                date: `${post.date[0]}-${String(post.date[1]).padStart(2, '0')}-${String(post.date[2]).padStart(2, '0')}` // Format date array into a string
+            }));
+            setPosts(postsWithFormattedDates); // Set formatted posts in state
+        } catch (error) {
+            console.error("Error fetching posts:", error);
+            setPosts([]); // Set to an empty array in case of error
+        }
     };
 
-    // Close modal handler
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
-        setSelectedPost(null);
+    useEffect(() => {
+        fetchPosts(); // Fetch posts when component mounts
+    }, []);
+
+    const handleAddPost = () => {
+        fetchPosts(); // Re-fetch posts after adding a new post
     };
 
-    // Handle search
     const handleSearch = () => {
-        const searchResults = posts.filter(post => post.title.includes(searchTerm) && !post.isAdmin);
+        const searchResults = posts.filter(post => post.title.includes(searchTerm));
         setFilteredPosts(searchResults);
         setCurrentPage(1);
     };
 
-    // Handle reset
     const handleReset = () => {
         setFilteredPosts([]);
         setSearchTerm('');
         setCurrentPage(1);
     };
 
-    // Open NewBoardInput modal
-    const handleWriteButtonClick = () => {
-        setIsNewBoardInputOpen(true);
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    const currentPosts = filteredPosts.length > 0 ? filteredPosts.slice(indexOfFirstPost, indexOfLastPost) : posts.slice(indexOfFirstPost, indexOfLastPost);
+
+    const totalPages = Math.ceil((filteredPosts.length > 0 ? filteredPosts.length : posts.length) / postsPerPage);
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+    const handleRowClick = (post) => {
+        setSelectedPost(post);
+        setIsModalOpen(true);
     };
 
-    // Close NewBoardInput modal
-    const handleCloseNewBoardInput = () => {
-        setIsNewBoardInputOpen(false);
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        setSelectedPost(null);
     };
-
-    // Handle new post submission
-    const handleAddPost = (newPost) => {
-        setPosts((prevPosts) => [
-            ...prevPosts,
-            { id: prevPosts.length + 1, ...newPost, date: new Date().toISOString().split('T')[0], isAdmin: false, content: newPost.content }, // Ensure content is included
-        ]);
-        setIsNewBoardInputOpen(false);
-    };
-
 
     return (
         <Container>
@@ -243,7 +226,7 @@ const FriendBoard = () => {
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                     <SearchButton onClick={handleSearch}>검색</SearchButton>
-                    <WriteButton onClick={handleWriteButtonClick}>작성</WriteButton> {/* Open NewBoardInput */}
+                    <WriteButton onClick={() => setIsNewBoardInputOpen(true)}>작성</WriteButton>
                     <ResetButton onClick={handleReset}>원상복귀</ResetButton>
                 </SearchContainer>
                 <Table>
@@ -253,26 +236,11 @@ const FriendBoard = () => {
                         <TableData>이름</TableData>
                         <TableData>날짜</TableData>
                     </TableHeader>
-                    {adminPosts.map((post) => (
-                        <TableRow
-                            key={post.id}
-                            notice={post.id === "#"}
-                            onClick={() => handleRowClick(post)}
-                        >
-                            <TableData>#</TableData>
-                            <TableData>{post.title}</TableData>
-                            <TableData>{post.author}</TableData>
-                            <TableData>{post.date}</TableData>
-                        </TableRow>
-                    ))}
                     {currentPosts.map((post, index) => (
-                        <TableRow
-                            key={post.id}
-                            onClick={() => handleRowClick(post)}
-                        >
+                        <TableRow key={post.id} onClick={() => handleRowClick(post)}>
                             <TableData>{indexOfFirstPost + index + 1}</TableData>
                             <TableData>{post.title}</TableData>
-                            <TableData>{post.author}</TableData>
+                            <TableData>{post.userId}</TableData>
                             <TableData>{post.date}</TableData>
                         </TableRow>
                     ))}
@@ -289,11 +257,16 @@ const FriendBoard = () => {
                     ))}
                 </Pagination>
             </Content>
-            <BoardNoticeModal isOpen={isModalOpen} onClose={handleCloseModal} post={selectedPost} />
+            <BoardNoticeModal
+                isOpen={isModalOpen}
+                onClose={handleCloseModal}
+                post={selectedPost}
+                onDelete={(postId) => setPosts(posts.filter(post => post.id !== postId))}
+            />
             <NewBoardInput
                 isOpen={isNewBoardInputOpen}
-                onClose={handleCloseNewBoardInput}
-                onAddPost={handleAddPost}
+                onClose={() => setIsNewBoardInputOpen(false)}
+                onAddPost={handleAddPost} // Add post callback
             />
         </Container>
     );

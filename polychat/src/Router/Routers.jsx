@@ -16,8 +16,8 @@ export const Routers = () => {
             {
                 element: <PublicLayout />,
                 children: [
-                    { path: "/createAccount", element: <CreateAccount /> },
-                    { path: "/interestUp", element: <InterestUp /> }
+                    { path: "/create-account", element: <CreateAccount /> },
+                    { path: "/interest-up", element: <InterestUp /> }
                 ]
             },
 
@@ -25,8 +25,8 @@ export const Routers = () => {
             {
                 element: <PrivateLayout />,
                 children: [
-                    { path: "/friendBoard", element: <FriendBoard /> },  // /friendBoard route
-                    { path: "/unityBuild", element: <UnityComponent/>}
+                    { path: "/friend-board", element: <FriendBoard /> }, 
+                    { path: "/unity-build", element: <UnityComponent/>}
                 ]
             }
         ]

@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
-
-const interestsList = ['심리학', '산책', '수공예', '음악', '독서', '캘리그래피', '명상', '건강', '여행', '댄스', '일상탈출', '문화체험', '미술', '요리', '운동', '디지털디톡스', '휴식', '사진'];
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const Container = styled.div`
     display: flex;
@@ -98,18 +96,31 @@ const ModalButton = styled.button`
 `;
 
 const InterestUp = () => {
-    const location = useLocation();
-    const nickname = location.state?.nickname || '';
+    const [searchParams] = useSearchParams();
+    const userId = searchParams.get('userId');
+    const navigate = useNavigate();
     const [selectedInterests, setSelectedInterests] = useState([]);
+    const [interestsList, setInterestsList] = useState([]);
     const [error, setError] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const handleInterestChange = (interest) => {
+    // Fetch interests on component mount
+    useEffect(() => {
+        axios.get('http://localhost:8000/interest/find-all')
+            .then((response) => {
+                setInterestsList(response.data); // Assuming response.data is an array of interests
+            })
+            .catch((error) => {
+                console.error('Error fetching interests', error);
+            });
+    }, []);
+
+    const handleInterestChange = (interestId) => {
         setSelectedInterests((prevSelected) => {
-            if (prevSelected.includes(interest)) {
-                return prevSelected.filter((i) => i !== interest);
+            if (prevSelected.includes(interestId)) {
+                return prevSelected.filter((i) => i !== interestId);
             } else if (prevSelected.length < 10) {
-                return [...prevSelected, interest];
+                return [...prevSelected, interestId];
             }
             return prevSelected;
         });
@@ -123,12 +134,15 @@ const InterestUp = () => {
         }
         setError('');
 
-        axios.post('https://your-api-url.com/api/createAccount', {
-            nickname,
-            interests: selectedInterests
+        // POST 요청을 API 요구 형식에 맞춰 전송
+        axios.post('http://localhost:8000/interest/regist', {
+            user_id: userId, // userId를 user_id로 전송
+            interest_list: selectedInterests // 선택된 관심사 ID 배열 전송
         })
             .then((response) => {
                 console.log('Data sent successfully', response.data);
+                // Form 제출 후 friend-board로 이동
+                navigate(`/friend-board?userId=${userId}`);
             })
             .catch((error) => {
                 console.error('Error sending data', error);
@@ -142,19 +156,19 @@ const InterestUp = () => {
     return (
         <Container>
             <h2>관심사를 선택하세요 (최소 5개, 최대 10개)</h2>
-            <p>선택된 관심사: {selectedInterests.length} / 10</p> {/* 선택된 관심사 숫자 표시 */}
+            <p>선택된 관심사: {selectedInterests.length} / 10</p>
             <CheckboxContainer>
                 {interestsList.map((interest) => (
                     <CheckboxLabel
-                        key={interest}
-                        className={selectedInterests.includes(interest) ? 'selected' : ''}
+                        key={interest.interestId}
+                        className={selectedInterests.includes(interest.interestId) ? 'selected' : ''}
                     >
                         <input
                             type="checkbox"
-                            checked={selectedInterests.includes(interest)}
-                            onChange={() => handleInterestChange(interest)}
+                            checked={selectedInterests.includes(interest.interestId)}
+                            onChange={() => handleInterestChange(interest.interestId)}
                         />
-                        {interest}
+                        {interest.interestName}
                     </CheckboxLabel>
                 ))}
             </CheckboxContainer>
