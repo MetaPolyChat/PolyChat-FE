@@ -162,7 +162,7 @@ const FriendBoard = () => {
     // Fetch posts from backend (API call)
     const fetchPosts = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/api/friendBoard/listView');
+            const response = await axios.get('https://polychat.fun:18000/api/api/friendBoard/listView');
             const postsWithFormattedDates = response.data.map(post => ({
                 ...post,
                 date: `${post.date[0]}-${String(post.date[1]).padStart(2, '0')}-${String(post.date[2]).padStart(2, '0')}` // Format date array into a string

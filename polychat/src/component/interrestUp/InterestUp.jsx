@@ -106,7 +106,7 @@ const InterestUp = () => {
 
     // Fetch interests on component mount
     useEffect(() => {
-        axios.get('http://localhost:8000/interest/find-all')
+        axios.get('https://polychat.fun:18000/api/interest/find-all')
             .then((response) => {
                 setInterestsList(response.data); // Assuming response.data is an array of interests
             })
@@ -135,7 +135,7 @@ const InterestUp = () => {
         setError('');
 
         // POST 요청을 API 요구 형식에 맞춰 전송
-        axios.post('http://localhost:8000/interest/regist', {
+        axios.post('https://polychat.fun:18000/api/api/interest/regist', {
             user_id: userId, // userId를 user_id로 전송
             interest_list: selectedInterests // 선택된 관심사 ID 배열 전송
         })
