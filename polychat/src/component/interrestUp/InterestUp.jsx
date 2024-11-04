@@ -142,7 +142,7 @@ const InterestUp = () => {
             .then((response) => {
                 console.log('Data sent successfully', response.data);
                 // Form 제출 후 friend-board로 이동
-                navigate(`/friend-board?userId=${userId}`);
+                navigate(`/unity-build`);
             })
             .catch((error) => {
                 console.error('Error sending data', error);
