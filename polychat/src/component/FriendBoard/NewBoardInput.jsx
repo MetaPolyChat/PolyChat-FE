@@ -175,7 +175,7 @@ const NewBoardInput = ({ isOpen, onClose, onAddPost }) => {
             userId: userId  // Include userId in the post data
         };
 
-        axios.post('https://polychat.fun:18000/api/api/friendBoard/create', postData)
+        axios.post('https://polychat.fun:18000/api/friendBoard/create', postData)
             .then(response => {
                 setIsSuccess(true);
                 setMessage('정상 처리되었습니다.');

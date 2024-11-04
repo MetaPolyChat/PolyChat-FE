@@ -135,7 +135,7 @@ const InterestUp = () => {
         setError('');
 
         // POST 요청을 API 요구 형식에 맞춰 전송
-        axios.post('https://polychat.fun:18000/api/api/interest/regist', {
+        axios.post('https://polychat.fun:18000/api/interest/regist', {
             user_id: userId, // userId를 user_id로 전송
             interest_list: selectedInterests // 선택된 관심사 ID 배열 전송
         })
