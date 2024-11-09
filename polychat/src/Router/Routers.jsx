@@ -6,6 +6,7 @@ import { CreateAccount } from '../component/createAccount/CreateAccount.jsx';
 import InterestUp from '../component/interrestUp/InterestUp.jsx';
 import { Login } from '../component/Login/Login.jsx';
 import { UnityComponent } from '../component/unity/UnityComponent.jsx';
+import MakeCharacter from '../component/makeCharacter/MakeCharacter.jsx';
 
 export const Routers = () => {
     return useRoutes(
@@ -17,6 +18,7 @@ export const Routers = () => {
                 element: <PublicLayout />,
                 children: [
                     { path: "/create-account", element: <CreateAccount /> },
+                    {path: "/makeCharacter", element: <MakeCharacter/>},
                     { path: "/interest-up", element: <InterestUp /> }
                 ]
             },
