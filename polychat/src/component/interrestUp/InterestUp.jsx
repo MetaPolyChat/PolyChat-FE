@@ -127,8 +127,8 @@ const InterestUp = () => {
     };
 
     const handleSubmit = () => {
-        if (selectedInterests.length < 5 || selectedInterests.length > 10) {
-            setError('관심사를 최소 5개에서 최대 10개까지 선택해주세요.');
+        if (selectedInterests.length < 1 || selectedInterests.length > 5) {
+            setError('관심사를 최소 1개에서 최대 5개까지 선택해주세요.');
             setIsModalOpen(true);
             return;
         }
@@ -155,8 +155,8 @@ const InterestUp = () => {
 
     return (
         <Container>
-            <h2>관심사를 선택하세요 (최소 5개, 최대 10개)</h2>
-            <p>선택된 관심사: {selectedInterests.length} / 10</p>
+            <h2>관심사를 선택하세요 (최소 1개, 최대 5개)</h2>
+            <p>선택된 관심사: {selectedInterests.length} / 5</p>
             <CheckboxContainer>
                 {interestsList.map((interest) => (
                     <CheckboxLabel
