@@ -18,7 +18,7 @@ export const Routers = () => {
                 element: <PublicLayout />,
                 children: [
                     { path: "/create-account", element: <CreateAccount /> },
-                    {path: "/makeCharacter", element: <MakeCharacter/>},
+                    {path: "/make-character", element: <MakeCharacter/>},
                     { path: "/interest-up", element: <InterestUp /> }
                 ]
             },
