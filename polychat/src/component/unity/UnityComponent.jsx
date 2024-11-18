@@ -11,19 +11,21 @@ const FullScreenContainer = styled.div`
     background-color: black;  // 배경색 설정 (필요시)
 `;
 
-export const UnityComponent = () => {
-    const { unityProvider, isLoaded, loadingProgression, requestPointerLock } = useUnityContext({
+export const UnityComponent = ({parameter}) => {
+    const { unityProvider, isLoaded, loadingProgression, requestPointerLock , sendMessage } = useUnityContext({
         loaderUrl: "/Build/Web.loader.js",  // 절대 경로로 수정
         dataUrl: "/Build/Web.data",         // 절대 경로로 수정
         frameworkUrl: "/Build/Web.framework.js", // 절대 경로로 수정
         codeUrl: "/Build/Web.wasm",         // 절대 경로로 수정
     });
+    
     useEffect(() => {
         if (isLoaded && parameter) {
             console.log("Sending parameter to Unity:", parameter);  // 전송할 파라미터를 콘솔에 출력
             sendMessage("ParameterReceiverObject", "MethodName", parameter);
         }
     }, [isLoaded, parameter]);
+    
     // 마우스 잠금 활성화하기 위해 클릭 이벤트 처리
     useEffect(() => {
         const handleClick = () => {
