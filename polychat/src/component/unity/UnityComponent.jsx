@@ -12,37 +12,24 @@ const FullScreenContainer = styled.div`
 `;
 
 export const UnityComponent = ({ parameter }) => {
-    const { unityProvider, isLoaded, loadingProgression, requestPointerLock, sendMessage } = useUnityContext({
+    const { unityProvider, isLoaded, sendMessage } = useUnityContext({
         loaderUrl: "/Build/webgl.loader.js",
         dataUrl: "/Build/webgl.data",
         frameworkUrl: "/Build/webgl.framework.js",
         codeUrl: "/Build/webgl.wasm",
     });
 
-    // Send parameter to Unity once Unity is fully loaded
+    // Unity가 로드되면 자동으로 메시지 보내기
     useEffect(() => {
-        if (isLoaded && parameter) {
-            console.log("Sending parameter to Unity:", parameter);
-            sendMessage("ParameterReceiverObject", "MethodName", parameter);
+        if (isLoaded) {
+            setTimeout(() => {
+                sendMessage('LoginTestScript', 'RecieveUnity', 'TestToken');
+            }, 100); // 100ms 정도 딜레이를 추가
         }
-    }, [isLoaded, parameter]);
-
-    // Handle pointer lock for Unity
-    useEffect(() => {
-        const handleClick = () => {
-            requestPointerLock();
-        };
-
-        window.addEventListener("click", handleClick);
-
-        return () => {
-            window.removeEventListener("click", handleClick);
-        };
-    }, [requestPointerLock]);
+    }, [isLoaded, sendMessage]);
 
     return (
         <FullScreenContainer>
-            {!isLoaded && <p>Loading... {Math.round(loadingProgression * 100)}%</p>}
             <Unity unityProvider={unityProvider} style={{ width: "100%", height: "100%" }} />
         </FullScreenContainer>
     );
