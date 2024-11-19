@@ -72,8 +72,8 @@ export const PrivateLayout = () => {
                 {isToolbarHidden ? '+' : '-'}
             </ToggleButton>
             <Toolbar isHidden={isToolbarHidden}>
-                <ToolbarItem to="/friendBoard">친구 찾기 게시판</ToolbarItem>
-                <ToolbarItem to="/unityBuild">내 방으로</ToolbarItem>
+                <ToolbarItem to="/friend-board">친구 찾기 게시판</ToolbarItem>
+                <ToolbarItem to="/unity-build">내 방으로</ToolbarItem>
             </Toolbar>
             <Content isToolbarHidden={isToolbarHidden}>
                 <Outlet />

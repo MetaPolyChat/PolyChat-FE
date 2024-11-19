@@ -24,7 +24,7 @@ export const UnityComponent = ({ parameter }) => {
         if (isLoaded) {
             setTimeout(() => {
                 sendMessage('LoginTestScript', 'RecieveUnity', 'TestToken');
-            }, 100); // 100ms 정도 딜레이를 추가
+            }, 100);
         }
     }, [isLoaded, sendMessage]);
 
