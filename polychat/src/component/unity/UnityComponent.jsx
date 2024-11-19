@@ -8,28 +8,29 @@ const FullScreenContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: black;  // 배경색 설정 (필요시)
+    background-color: black;
 `;
 
-export const UnityComponent = ({parameter}) => {
-    const { unityProvider, isLoaded, loadingProgression, requestPointerLock , sendMessage } = useUnityContext({
-        loaderUrl: "/Build/Web.loader.js",  // 절대 경로로 수정
-        dataUrl: "/Build/Web.data",         // 절대 경로로 수정
-        frameworkUrl: "/Build/Web.framework.js", // 절대 경로로 수정
-        codeUrl: "/Build/Web.wasm",         // 절대 경로로 수정
+export const UnityComponent = ({ parameter }) => {
+    const { unityProvider, isLoaded, loadingProgression, requestPointerLock, sendMessage } = useUnityContext({
+        loaderUrl: "/Build/webgl.loader.js",
+        dataUrl: "/Build/webgl.data",
+        frameworkUrl: "/Build/webgl.framework.js",
+        codeUrl: "/Build/webgl.wasm",
     });
-    
+
+    // Send parameter to Unity once Unity is fully loaded
     useEffect(() => {
         if (isLoaded && parameter) {
-            console.log("Sending parameter to Unity:", parameter);  // 전송할 파라미터를 콘솔에 출력
+            console.log("Sending parameter to Unity:", parameter);
             sendMessage("ParameterReceiverObject", "MethodName", parameter);
         }
     }, [isLoaded, parameter]);
-    
-    // 마우스 잠금 활성화하기 위해 클릭 이벤트 처리
+
+    // Handle pointer lock for Unity
     useEffect(() => {
         const handleClick = () => {
-            requestPointerLock();  // Unity 화면을 클릭하면 마우스를 잠금
+            requestPointerLock();
         };
 
         window.addEventListener("click", handleClick);
