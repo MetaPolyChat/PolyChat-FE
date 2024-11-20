@@ -19,10 +19,12 @@ export const UnityComponent = ({ parameter }) => {
         frameworkUrl: "/Build/webgl.framework.js",
         codeUrl: "/Build/webgl.wasm",
     });
-
+    const searchParams = new URLSearchParams(location.search);
+    const userId = searchParams.get('userId');
+    console.log("userId ::" +userId)
     const [userData, setUserData] = useState(null);
     useEffect(()=>{
-        axios.get('https://polychat.fun:18000/api/info?userId=11')
+        axios.get(`https://polychat.fun:18000/api/info?${userId}`)
             .then(res => {
                 setUserData(res.data);
                 console.log("res.data :: ", JSON.stringify(res.data, null, 2)); // Beautifies JSON output
@@ -36,7 +38,7 @@ export const UnityComponent = ({ parameter }) => {
     useEffect(() => {
         if (isLoaded) {
             setTimeout(() => {
-                sendMessage('LoginTestScript', 'RecieveUnity', 'TestToken');
+                sendMessage('LoginTestScript', 'RecieveUnity', userData);
             }, 100);
         }
     }, [isLoaded, sendMessage]);
