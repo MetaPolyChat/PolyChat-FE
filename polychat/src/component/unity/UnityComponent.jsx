@@ -2,6 +2,7 @@ import { Unity, useUnityContext } from 'react-unity-webgl';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { String } from 'three/addons/transpiler/AST.js';
 
 const FullScreenContainer = styled.div`
     width: 100vw;
@@ -27,21 +28,19 @@ export const UnityComponent = ({ parameter }) => {
     useEffect(() => {
         axios.get(`https://polychat.fun:18000/api/info?userId=${userId}`)
             .then(res => {
-                console.log("res.data :: ", JSON.stringify(res.data, null, 2));
-                console.log("res.data.userName :: " + res.data.userName);
                 setUserData(res.data);
                 setUserName(res.data.userName);
             })
             .catch(error => {
                 console.log('Error 떳다', error);
             });
-    }, [userId]);
+    }, [isLoaded]);
 
     // Unity가 로드되고 userName이 설정되면 메시지 보내기
     useEffect(() => {
         if (isLoaded && userName) {
             setTimeout(() => {
-                sendMessage('LoginTestScript', 'RecieveUnity', userName);
+                sendMessage('Get_UserName', 'RecieveUnity', userName);
             }, 100);
         }
     }, [isLoaded, sendMessage, userName]);
