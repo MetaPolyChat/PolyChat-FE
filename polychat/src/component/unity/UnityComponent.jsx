@@ -18,6 +18,7 @@ export const UnityComponent = ({ parameter }) => {
     const userId = searchParams.get('userId');
     const [userName, setUserName] = useState(null);
     const [userData, setUserData] = useState(null);
+    const [userInterest, setUserInterest] = useState(null);
     const { unityProvider, isLoaded, sendMessage } = useUnityContext({
         loaderUrl: "/Build/webgl.loader.js",
         dataUrl: "/Build/webgl.data",
@@ -35,15 +36,27 @@ export const UnityComponent = ({ parameter }) => {
                 console.log('Error 떳다', error);
             });
     }, [isLoaded]);
+    
+    useEffect(()=>{
+        axios.get(`https://polychat.fun:18000/api/interest/user?userId=${userId}`)
+            .then(res => {
+                setUserInterest(res.data);
+            })
+            .catch(error=>{
+                console.log('Interest Error',error);
+            });
+    },[isLoaded]);
 
     // Unity가 로드되고 userName이 설정되면 메시지 보내기
     useEffect(() => {
-        if (isLoaded && userName) {
+        if (isLoaded) {
+            console.log("userInterest :: " + userInterest);
             setTimeout(() => {
                 sendMessage('Get_UserName', 'RecieveUnity', userName);
+                sendMessage('Get_UserInterest', 'RecieveUnityByInterest', userInterest);
             }, 100);
         }
-    }, [isLoaded, sendMessage, userName]);
+    }, [isLoaded, sendMessage, userName, userInterest]);
     
     
     
