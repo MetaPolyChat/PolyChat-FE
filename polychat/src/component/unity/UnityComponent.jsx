@@ -26,6 +26,7 @@ export const UnityComponent = ({ parameter }) => {
     useEffect(()=>{
         axios.get(`https://polychat.fun:18000/api/info?userId=${userId}`)
             .then(res => {
+                console.log("res.data :: ", JSON.stringify(res.data, null, 2)); // Beautifies JSON output
                 setUserData(res.data);
                 console.log("res.data :: ", JSON.stringify(res.data, null, 2)); // Beautifies JSON output
             })
