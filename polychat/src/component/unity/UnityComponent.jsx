@@ -13,7 +13,7 @@ const FullScreenContainer = styled.div`
     background-color: black;
 `;
 
-export const UnityComponent = ({ parameter }) => {
+export const UnityComponent = () => {
     const searchParams = new URLSearchParams(location.search);
     const userId = searchParams.get('userId');
     const [userName, setUserName] = useState(null);
@@ -29,7 +29,6 @@ export const UnityComponent = ({ parameter }) => {
     useEffect(() => {
         axios.get(`https://polychat.fun:18000/api/info?userId=${userId}`)
             .then(res => {
-                setUserData(res.data);
                 setUserName(res.data.userName);
             })
             .catch(error => {
@@ -46,20 +45,20 @@ export const UnityComponent = ({ parameter }) => {
                 console.log('Interest Error',error);
             });
     },[isLoaded]);
-
-    // Unity가 로드되고 userName이 설정되면 메시지 보내기
+    
     useEffect(() => {
-        if (isLoaded) {
-            console.log("userInterest :: " + userInterest);
+        if (isLoaded && userName && userInterest) {
             setTimeout(() => {
-                sendMessage('Get_UserName', 'RecieveUnity', userName);
-                sendMessage('Get_UserInterest', 'RecieveUnityByInterest', userInterest);
-            }, 100);
+                sendMessage('Get_UserName', 'RecieveUnity', JSON.stringify(userName));
+                sendMessage('Get_UserInterest', 'RecieveUnityByInterest', JSON.stringify(userInterest));
+            }, 300);
         }
-    }, [isLoaded, sendMessage, userName, userInterest]);
-    
-    
-    
+    }, [isLoaded, userName, userInterest]);
+
+
+
+
+
 
     return (
         <FullScreenContainer>
