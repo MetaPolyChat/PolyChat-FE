@@ -39,7 +39,7 @@ export const UnityComponent = ({ parameter }) => {
     useEffect(() => {
         if (isLoaded) {
             setTimeout(() => {
-                sendMessage('LoginTestScript', 'RecieveUnity', userData);
+                sendMessage('LoginTestScript', 'RecieveUnity', setUserData);
             }, 100);
         }
     }, [isLoaded, sendMessage]);
