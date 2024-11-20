@@ -22,13 +22,13 @@ export const UnityComponent = ({ parameter }) => {
 
     const [userData, setUserData] = useState(null);
     useEffect(()=>{
-        axios.get('https://polychat.fun:18000/info?userId=11')
-            .then(res=>{
+        axios.get('https://polychat.fun:18000/api/info?userId=11')
+            .then(res => {
                 setUserData(res.data);
-                console.log("res.data :: " + res.data);
+                console.log("res.data :: ", JSON.stringify(res.data, null, 2)); // Beautifies JSON output
             })
-            .catch(error=>{
-                console.log('Error떳다',error);
+            .catch(error => {
+                console.log('Error 떳다', error);
             });
     },[]);
 
