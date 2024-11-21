@@ -18,8 +18,7 @@ export const UnityComponent = () => {
     if (userId && !isNaN(userId)) {
         userId = Number(userId); // Convert to number
     } else {
-        console.error("Invalid userId received: ", userId);
-        userId = null; // Set to null if invalid
+        userId = null;
     }
     const { unityProvider, isLoaded, sendMessage } = useUnityContext({
         loaderUrl: "/Build/webgl.loader.js",
@@ -32,7 +31,6 @@ export const UnityComponent = () => {
     useEffect(() => {
         if (isLoaded) {
             setTimeout(()=>{
-                console.log("유니티로 보낼 userId :: " + userId);
                 sendMessage('Canvas@[UIManager]', 'AddId', JSON.stringify(userId));
             },100)
         }
