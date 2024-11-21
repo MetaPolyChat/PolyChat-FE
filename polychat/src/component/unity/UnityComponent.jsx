@@ -14,7 +14,13 @@ const FullScreenContainer = styled.div`
 
 export const UnityComponent = () => {
     const searchParams = new URLSearchParams(location.search);
-    const userId = searchParams.get('userId');
+    let userId = searchParams.get('userId');
+    if (userId && !isNaN(userId)) {
+        userId = Number(userId); // Convert to number
+    } else {
+        console.error("Invalid userId received: ", userId);
+        userId = null; // Set to null if invalid
+    }
     const { unityProvider, isLoaded, sendMessage } = useUnityContext({
         loaderUrl: "/Build/webgl.loader.js",
         dataUrl: "/Build/webgl.data",
@@ -27,7 +33,7 @@ export const UnityComponent = () => {
         if (isLoaded) {
             setTimeout(()=>{
                 console.log("유니티로 보낼 userId :: " + userId);
-                sendMessage('Canvas@[UIManager]', 'RecieveUnity', JSON.stringify(userId));
+                sendMessage('Canvas@[UIManager]', 'AddId', JSON.stringify(userId));
             },100)
         }
     }, [isLoaded]); // 이 의존성은 필요
