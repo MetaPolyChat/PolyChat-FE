@@ -2,7 +2,6 @@ import { Unity, useUnityContext } from 'react-unity-webgl';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { String } from 'three/addons/transpiler/AST.js';
 
 const FullScreenContainer = styled.div`
     width: 100vw;
@@ -16,9 +15,6 @@ const FullScreenContainer = styled.div`
 export const UnityComponent = () => {
     const searchParams = new URLSearchParams(location.search);
     const userId = searchParams.get('userId');
-    const [userName, setUserName] = useState(null);
-    const [userData, setUserData] = useState(null);
-    const [userInterest, setUserInterest] = useState(null);
     const { unityProvider, isLoaded, sendMessage } = useUnityContext({
         loaderUrl: "/Build/webgl.loader.js",
         dataUrl: "/Build/webgl.data",
@@ -26,39 +22,15 @@ export const UnityComponent = () => {
         codeUrl: "/Build/webgl.wasm",
     });
 
+    // Send data to Unity once when all data is ready
     useEffect(() => {
-        axios.get(`https://polychat.fun:18000/api/info?userId=${userId}`)
-            .then(res => {
-                setUserName(res.data.userName);
-            })
-            .catch(error => {
-                console.log('Error 떳다', error);
-            });
-    }, [isLoaded]);
-    
-    useEffect(()=>{
-        axios.get(`https://polychat.fun:18000/api/interest/user?userId=${userId}`)
-            .then(res => {
-                setUserInterest(res.data);
-            })
-            .catch(error=>{
-                console.log('Interest Error',error);
-            });
-    },[isLoaded]);
-    
-    useEffect(() => {
-        if (isLoaded && userName && userInterest) {
-            setTimeout(() => {
-                sendMessage('Get_UserName', 'RecieveUnity', JSON.stringify(userName));
-                sendMessage('Get_UserInterest', 'RecieveUnityByInterest', JSON.stringify(userInterest));
-            }, 300);
+        if (isLoaded) {
+            setTimeout(()=>{
+                console.log("유니티로 보낼 userId :: " + userId);
+                sendMessage('Canvas@[UIManager]', 'RecieveUnity', JSON.stringify(userId));
+            },100)
         }
-    }, [isLoaded, userName, userInterest]);
-
-
-
-
-
+    }, [isLoaded]); // 이 의존성은 필요
 
     return (
         <FullScreenContainer>
