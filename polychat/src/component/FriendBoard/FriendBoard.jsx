@@ -11,6 +11,9 @@ const Container = styled.div`
     margin: 0;
     position: relative;
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* 세로 중앙 정렬 */
 `;
 
 const BackgroundVideo = styled.video`
@@ -33,7 +36,7 @@ const Content = styled.div`
     background-color: rgba(115, 138, 224, 0.9);
     border-radius: 10px;
     color: white;
-    margin: 0 auto;
+    margin: 0; /* 가운데 정렬 */
 `;
 
 const Header = styled.h1`
