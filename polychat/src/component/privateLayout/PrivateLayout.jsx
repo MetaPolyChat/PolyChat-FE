@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 const LayoutContainer = styled.div`
@@ -61,6 +61,9 @@ const Content = styled.div`
 
 export const PrivateLayout = () => {
     const [isToolbarHidden, setIsToolbarHidden] = useState(true);
+    const location = useLocation();
+    const params = new URLSearchParams(location.search);
+    const userId = params.get('userId'); // 쿼리 파라미터에서 userId 읽기
 
     const toggleToolbar = () => {
         setIsToolbarHidden(!isToolbarHidden);
@@ -72,8 +75,8 @@ export const PrivateLayout = () => {
                 {isToolbarHidden ? '+' : '-'}
             </ToggleButton>
             <Toolbar isHidden={isToolbarHidden}>
-                <ToolbarItem to="/friend-board">친구 찾기 게시판</ToolbarItem>
-                <ToolbarItem to="/unity-build">내 방으로</ToolbarItem>
+                <ToolbarItem to={`/friend-board?userId=${userId || 0}`}>친구 찾기 게시판</ToolbarItem>
+                <ToolbarItem to={`/unity-build?userId=${userId || 0}`}>내 방으로</ToolbarItem>
             </Toolbar>
             <Content isToolbarHidden={isToolbarHidden}>
                 <Outlet />
