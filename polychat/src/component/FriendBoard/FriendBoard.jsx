@@ -166,16 +166,29 @@ const FriendBoard = () => {
     const fetchPosts = async () => {
         try {
             const response = await axios.get('https://polychat.fun:18000/api/friendBoard/listView');
+
+            const formatter = new Intl.DateTimeFormat('ko-KR', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false,
+            });
+
             const postsWithFormattedDates = response.data.map(post => ({
                 ...post,
-                date: `${post.date[0]}-${String(post.date[1]).padStart(2, '0')}-${String(post.date[2]).padStart(2, '0')}` // Format date array into a string
+                date: formatter.format(new Date(post.date)) // Format to 년 월 일 시 분 초
             }));
+
             setPosts(postsWithFormattedDates); // Set formatted posts in state
         } catch (error) {
             console.error("Error fetching posts:", error);
             setPosts([]); // Set to an empty array in case of error
         }
     };
+
 
     useEffect(() => {
         fetchPosts(); // Fetch posts when component mounts
