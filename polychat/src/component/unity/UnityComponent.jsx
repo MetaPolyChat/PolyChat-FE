@@ -22,9 +22,9 @@ export const UnityComponent = () => {
     }
     const { unityProvider, isLoaded, sendMessage } = useUnityContext({
         loaderUrl: "/Build/webgl.loader.js",
-        dataUrl: "/Build/webgl.data",
-        frameworkUrl: "/Build/webgl.framework.js",
-        codeUrl: "/Build/webgl.wasm",
+        dataUrl: "/Build/webgl.data.br",
+        frameworkUrl: "/Build/webgl.framework.js.br",
+        codeUrl: "/Build/webgl.wasm.br",
     });
 
     // Send data to Unity once when all data is ready
