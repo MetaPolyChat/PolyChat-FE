@@ -1,7 +1,6 @@
 import { Unity, useUnityContext } from 'react-unity-webgl';
 import styled from 'styled-components';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useEffect, useState, useRef } from 'react';
 
 const FullScreenContainer = styled.div`
     width: 100vw;
@@ -27,14 +26,29 @@ export const UnityComponent = () => {
         codeUrl: "/Build/webgl.wasm",
     });
 
-    // Send data to Unity once when all data is ready
+    const isInitializedRef = useRef(false);
+
     useEffect(() => {
-        if (isLoaded) {
-            setTimeout(()=>{
-                sendMessage('Canvas@[UIManager]', 'AddId', JSON.stringify(userId));
-            },100)
+        if (isLoaded && !isInitializedRef.current) {
+            // Unity 초기화 시 데이터 전달
+            sendMessage("Canvas@[UIManager]", "AddId", JSON.stringify(userId));
+            sendMessage("AudioManager", "ToggleAudioPlayback");
+
+            // Unity 초기화 완료 플래그 설정
+            isInitializedRef.current = true;
         }
-    }, [isLoaded]); // 이 의존성은 필요
+    }, [isLoaded, userId]);
+
+    useEffect(() => {
+        // Outlet 이동 시 Unity 음악 상태 동기화
+        return () => {
+            if (isInitializedRef.current) {
+                sendMessage("AudioManager", "ToggleAudioPlayback"); // 음악 중지
+            }
+        };
+    }, []);
+
+    
 
     return (
         <FullScreenContainer>

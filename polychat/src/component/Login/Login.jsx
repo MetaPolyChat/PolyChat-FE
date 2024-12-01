@@ -1,54 +1,156 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useEffect, useState } from 'react';
-import './LoginStyle.css'; // 스타일 파일 임포트
-import { useNavigate } from 'react-router-dom';
-import { GoogleLogin, googleLogout, GoogleOAuthProvider } from "@react-oauth/google";
-import midiaBackground from '../../Midia/univerBackground.mp4'; // 배경 비디오
-import transitionVideoSrc from '../../Midia/InpotalMidia.mp4'; // 전환 비디오
-import { jwtDecode } from 'jwt-decode';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import googleimg from '../../ImgDocument/GoogleLoginImage.png'
+import './LoginStyle.css'; // 스타일 파일 임포트
+import midiaBackground from '../../Midia/univerBackground.mp4';
+import transitionVideoSrc from '../../Midia/InpotalMidia.mp4';
+import googleimg from '../../ImgDocument/GoogleLoginImage.png';
+import { useNavigate } from 'react-router-dom';
+
 const LoginButton = styled.button`
-    width: 240px; /* Set the width for the button */
-    height: 50px; /* Set the height for the button */
-    //background-color: transparent; /* Make the background transparent since we use an image */
-    border: none; /* Remove the default button border */
-    border-radius: 8px; /* Add rounded corners */
-    padding: 0; /* Remove padding to ensure the image fits */
-    cursor: pointer; /* Change cursor to pointer for interactivity */
-    display: flex; /* Use flexbox to center the image */
-    align-items: center; /* Vertically align the image */
-    justify-content: center; /* Horizontally align the image */
+    width: 240px;
+    height: 50px;
+    border: none;
+    border-radius: 8px;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     z-index: 999999999;
 
     &:hover {
-        opacity: 0.9; /* Add a hover effect */
+        opacity: 0.9;
     }
 
     &:disabled {
-        opacity: 0.5; /* Dim the button when disabled */
-        cursor: not-allowed; /* Change the cursor to indicate it's disabled */
+        opacity: 0.5;
+        cursor: not-allowed;
     }
 
     img {
-        width: 100%; /* Ensure the image fits the button width */
-        height: 100%; /* Ensure the image fits the button height */
-        object-fit: cover; /* Maintain the aspect ratio of the image */
-        border-radius: 8px; /* Match the button's rounded corners */
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+`;
+
+const DevButton = styled.button`
+    width: 240px;
+    height: 50px;
+    border: none;
+    border-radius: 8px;
+    background-color: #4caf50; /* 녹색 */
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+
+    &:hover {
+        background-color: #45a049;
+    }
+
+    &:active {
+        background-color: #3e8e41;
+    }
+`;
+
+const ModalWrapper = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+`;
+
+const ModalContent = styled.div`
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    text-align: center; /* 텍스트와 버튼을 가운데 정렬 */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+
+    h2 {
+        margin-bottom: 20px;
+    }
+
+    button {
+        background: #4caf50;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 10px auto;
+        display: block;
+        width: 80%;
+
+        &:hover {
+            background: #45a049;
+        }
+
+        &:active {
+            background: #3e8e41;
+        }
     }
 `;
 
 
+const LoginInput = styled.input`
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+`;
+
+
+
+const LoginModalContent = styled(ModalContent)`
+    h2 {
+        margin-bottom: 20px;
+    }
+`;
 
 export const Login = () => {
-    // 상태 변수 정의
     const [isAnimating, setIsAnimating] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [userId, setUserId] = useState('');
+    const [password, setPassword] = useState('');
     const navigate = useNavigate();
-    
+
     const moveBackEndSpringGoogleLogin = () => {
-        // Redirect to backend for Google login
         window.location.href = 'https://polychat.fun:18000/api/auth/google/redirect';
     };
+
+    const openModal = () => {
+        setIsModalOpen(true);
+        console.log("Modal opened!");
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        console.log("Modal closed!");
+    };
+
+    const handleLogin = () => {
+        if (userId === '11' && password === 'user11') {
+            console.log('Login successful!');
+            navigate(`/friend-board?userId=${userId}`);
+        } else {
+            alert('Invalid UserID or Password');
+        }
+        closeModal();
+    };
+
 
     return (
         <div className="LoginWrapper">
@@ -64,6 +166,7 @@ export const Login = () => {
                     <LoginButton onClick={moveBackEndSpringGoogleLogin}>
                         <img src={googleimg} alt="Google Login" />
                     </LoginButton>
+                    <DevButton onClick={openModal}>Dev Button</DevButton>
                 </div>
             </div>
 
@@ -71,6 +174,30 @@ export const Login = () => {
                 <source src={transitionVideoSrc} type="video/mp4" />
                 Your browser does not support the video tag.
             </video>
+
+            {isModalOpen && (
+                <ModalWrapper>
+                    <LoginModalContent>
+                        <h2>Login</h2>
+                        <LoginInput
+                            type="text"
+                            placeholder="UserID"
+                            value={userId}
+                            onChange={(e) => setUserId(e.target.value)}
+                        />
+                        <LoginInput
+                            type="password"
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                        <LoginButton onClick={handleLogin}>Login</LoginButton>
+                        <button onClick={closeModal} style={{ marginTop: '10px', backgroundColor: '#ccc' }}>
+                            닫기
+                        </button>
+                    </LoginModalContent>
+                </ModalWrapper>
+            )}
         </div>
     );
 };
