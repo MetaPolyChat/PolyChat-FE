@@ -26,27 +26,12 @@ export const UnityComponent = () => {
         codeUrl: "/Build/webgl.wasm",
     });
 
-    const isInitializedRef = useRef(false);
-
     useEffect(() => {
-        if (isLoaded && !isInitializedRef.current) {
+        if (isLoaded) {
             // Unity 초기화 시 데이터 전달
             sendMessage("Canvas@[UIManager]", "AddId", JSON.stringify(userId));
-            sendMessage("AudioManager", "ToggleAudioPlayback");
-
-            // Unity 초기화 완료 플래그 설정
-            isInitializedRef.current = true;
         }
     }, [isLoaded, userId]);
-
-    useEffect(() => {
-        // Outlet 이동 시 Unity 음악 상태 동기화
-        return () => {
-            if (isInitializedRef.current) {
-                sendMessage("AudioManager", "ToggleAudioPlayback"); // 음악 중지
-            }
-        };
-    }, []);
 
     
 
