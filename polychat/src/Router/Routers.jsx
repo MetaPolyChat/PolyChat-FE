@@ -7,6 +7,7 @@ import InterestUp from '../component/interrestUp/InterestUp.jsx';
 import { Login } from '../component/Login/Login.jsx';
 import { UnityComponent } from '../component/unity/UnityComponent.jsx';
 import MakeCharacter from '../component/makeCharacter/MakeCharacter.jsx';
+import { SocialLayout } from '../component/social/SocialLayout.jsx';
 
 export const Routers = () => {
     return useRoutes(
@@ -22,14 +23,17 @@ export const Routers = () => {
                     { path: "/interest-up", element: <InterestUp /> }
                 ]
             },
-
-            // PrivateLayout for post-sign-up-related routes
+            
             {
                 element: <PrivateLayout />,
                 children: [
                     { path: "/friend-board", element: <FriendBoard /> }, 
                     { path: "/unity-build", element: <UnityComponent/>}
                 ]
+            },
+            {
+                element: <SocialLayout/>,
+                children: []
             }
         ]
     );

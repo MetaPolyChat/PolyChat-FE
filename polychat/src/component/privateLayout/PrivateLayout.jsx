@@ -72,11 +72,10 @@ export const PrivateLayout = () => {
     return (
         <LayoutContainer>
             <ToggleButton onClick={toggleToolbar}>
-                {isToolbarHidden ? '+' : '-'}
+                {isToolbarHidden ? 'ON' : 'OUT'}
             </ToggleButton>
             <Toolbar isHidden={isToolbarHidden}>
                 <ToolbarItem to={`/friend-board?userId=${userId || 0}`}>친구 찾기 게시판</ToolbarItem>
-                <ToolbarItem to={`/unity-build?userId=${userId || 0}`}>내 방으로</ToolbarItem>
             </Toolbar>
             <Content isToolbarHidden={isToolbarHidden}>
                 <Outlet />
