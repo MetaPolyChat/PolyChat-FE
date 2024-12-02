@@ -38,7 +38,8 @@ export default defineConfig(({ mode }) => {
         ],
         server: {
             host: env.VITE_IP || '0.0.0.0',
-            port: parseInt(env.VITE_PORT, 10) || 3000
+            port: parseInt(env.VITE_PORT, 10) || 3000,
+            cors: true,
         },
     };
 });

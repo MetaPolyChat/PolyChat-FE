@@ -143,7 +143,6 @@ export const Login = () => {
 
     const handleLogin = () => {
         if (userId === '11' && password === 'user11') {
-            console.log('Login successful!');
             navigate(`/friend-board?userId=${userId}`);
         } else {
             alert('Invalid UserID or Password');
@@ -166,7 +165,7 @@ export const Login = () => {
                     <LoginButton onClick={moveBackEndSpringGoogleLogin}>
                         <img src={googleimg} alt="Google Login" />
                     </LoginButton>
-                    <DevButton onClick={openModal}>Dev Button</DevButton>
+                    <DevButton onClick={openModal}>On Dev</DevButton>
                 </div>
             </div>
 
@@ -193,7 +192,7 @@ export const Login = () => {
                         />
                         <LoginButton onClick={handleLogin}>Login</LoginButton>
                         <button onClick={closeModal} style={{ marginTop: '10px', backgroundColor: '#ccc' }}>
-                            닫기
+                            Exit
                         </button>
                     </LoginModalContent>
                 </ModalWrapper>
