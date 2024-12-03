@@ -14,6 +14,8 @@ const FullScreenContainer = styled.div`
 export const UnityComponent = () => {
     const searchParams = new URLSearchParams(location.search);
     let userId = searchParams.get('userId');
+    
+    
     if (userId && !isNaN(userId)) {
         userId = Number(userId); // Convert to number
     } else {

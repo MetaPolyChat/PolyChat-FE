@@ -143,9 +143,9 @@ export const Login = () => {
 
     const handleLogin = () => {
         if (userId === '11' && password === 'user11') {
-            navigate(`/friend-board?userId=${userId}`);
+            navigate(`/unity-build?userId=${userId}`);
         } else {
-            alert('Invalid UserID or Password');
+            alert('No');
         }
         closeModal();
     };
