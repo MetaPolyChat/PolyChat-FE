@@ -115,6 +115,7 @@ export const PrivateLayout = () => {
                 </ToggleButton>
                 <Header isHidden={isHeaderHidden}>
                     <Nav>
+                        <NavItem to={`/introduction?userId=${userId}`}>Introduction</NavItem>
                         <NavItem to={`/friend-board?userId=${userId}`}>Friend Board</NavItem>
                         <NavItem to={`/social-main?userId=${userId}`}>Social Board</NavItem>
                         <NavItem to={`/item-shop?userId=${userId}`}>Item Shop</NavItem>

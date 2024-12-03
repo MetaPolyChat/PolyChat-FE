@@ -9,6 +9,7 @@ import { UnityComponent } from '../component/unity/UnityComponent.jsx';
 import MakeCharacter from '../component/makeCharacter/MakeCharacter.jsx';
 import { SocialLayout } from '../component/social/SocialLayout.jsx';
 import { ItemShop } from '../component/itemshop/ItemShop.jsx';
+import { Introduction } from '../component/introduction/Introduction.jsx';
 
 
 const RequireUserId = ({ children }) => {
@@ -50,6 +51,7 @@ export const Routers = () => {
                     </RequireUserId>
                 ),
                 children: [
+                    { path: "/introduction", element: <Introduction/>},
                     { path: "/friend-board", element: <FriendBoard /> },
                     { path: "/social-main", element: <SocialLayout /> },
                     { path: "/item-shop", element: <ItemShop /> },

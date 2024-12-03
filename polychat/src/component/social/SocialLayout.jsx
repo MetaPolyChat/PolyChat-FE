@@ -53,16 +53,16 @@ const SearchInput = styled.input`
 `;
 
 const SearchButton = styled.button`
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  background-color: rgba(255, 255, 255, 0.2);
-  color: white;
-  cursor: pointer;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    cursor: pointer;
 
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.4);
-  }
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.4);
+    }
 `;
 
 // 메인 게시판
@@ -81,71 +81,25 @@ const FriendRecommendation = styled(Card)`
     flex: 1;
 `;
 
-// 모달 스타일
-const ModalOverlay = styled.div`
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+const FriendItem = styled.div`
     display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-`;
-
-const ModalContent = styled.div`
-    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     color: white;
-    border-radius: 10px;
-    padding: 20px;
-    width: 400px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-`;
-
-const Input = styled.input`
-    padding: 10px;
-    border-radius: 5px;
-    border: none;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: white;
-
-    &:focus {
-        outline: none;
-    }
-`;
-
-const TextArea = styled.textarea`
-  padding: 10px;
-  border-radius: 5px;
-  border: none;
-  background-color: rgba(255, 255, 255, 0.1);
-  color: white;
-  resize: none;
-
-  &:focus {
-    outline: none;
-  }
-`;
-
-const FileInput = styled.input`
-  color: white;
 `;
 
 const Button = styled.button`
-  background-color: rgba(255, 255, 255, 0.2);
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 5px;
-  cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
 
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.4);
-  }
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.4);
+    }
 `;
 
 export const SocialLayout = () => {
@@ -158,6 +112,8 @@ export const SocialLayout = () => {
         content: "",
         image: null,
     });
+
+    const [interestSearch, setInterestSearch] = useState(""); // 관심사 검색 상태
 
     const handleOpenModal = () => {
         setCurrentPost({
@@ -197,8 +153,16 @@ export const SocialLayout = () => {
             <LayoutContainer>
                 {/* 검색 섹션 */}
                 <SearchSection>
-                    <SearchInput placeholder="Search..." />
+                    <SearchInput
+                        placeholder="Search by keyword..."
+                        onChange={(e) => setInterestSearch(e.target.value)}
+                    />
                     <SearchButton>Search</SearchButton>
+                    <SearchInput
+                        placeholder="Search by interest..."
+                        onChange={(e) => setInterestSearch(e.target.value)}
+                    />
+                    <SearchButton>Search by Interest</SearchButton>
                 </SearchSection>
 
                 {/* 메인 게시판 */}
@@ -232,6 +196,14 @@ export const SocialLayout = () => {
                 {/* 친구 추천 섹션 */}
                 <FriendRecommendation>
                     <h3>Friend Recommendation</h3>
+                    <FriendItem>
+                        <span>Profile 1</span>
+                        <span>NickName 1</span>
+                    </FriendItem>
+                    <FriendItem>
+                        <span>Profile 2</span>
+                        <span>NickName 2</span>
+                    </FriendItem>
                 </FriendRecommendation>
             </LayoutContainer>
 
