@@ -23,7 +23,6 @@ const LayoutContainer = styled.div`
     min-height: 100vh;
 `;
 
-// 카드 스타일 (투명한 검은색 배경)
 const Card = styled.div`
     background-color: rgba(0, 0, 0, 0.6);
     border-radius: 10px;
@@ -70,10 +69,25 @@ const BoardContainer = styled(Card)`
     flex: 2;
 `;
 
+const PostItem = styled.div`
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+`;
+
+const PostImage = styled.img`
+    width: 100%;
+    border-radius: 5px;
+    margin-top: 10px;
+`;
+
 const NoData = styled.div`
     text-align: center;
     color: rgba(255, 255, 255, 0.7);
     font-size: 18px;
+    margin-top: 20px;
 `;
 
 // 친구 추천 섹션
@@ -81,26 +95,104 @@ const FriendRecommendation = styled(Card)`
     flex: 1;
 `;
 
+const FriendList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+`;
+
 const FriendItem = styled.div`
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    color: white;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+`;
+
+// 모달 스타일
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+`;
+
+const ModalContent = styled.div`
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 10px;
+  padding: 20px;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  color: white;
+`;
+
+const Input = styled.input`
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+
+  &:focus {
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+`;
+
+const TextArea = styled.textarea`
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  resize: none;
+
+  &:focus {
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+`;
+
+const FileInput = styled.input`
+  margin-top: 10px;
+  color: white;
+  border: none;
+  background: none;
+
+  &:focus {
+    outline: none;
+  }
 `;
 
 const Button = styled.button`
-    background-color: rgba(255, 255, 255, 0.2);
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.2);
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+  font-size: 14px;
 
-    &:hover {
-        background-color: rgba(255, 255, 255, 0.4);
-    }
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+  }
 `;
+
+
 
 export const SocialLayout = () => {
     const [posts, setPosts] = useState([]);
@@ -112,8 +204,6 @@ export const SocialLayout = () => {
         content: "",
         image: null,
     });
-
-    const [interestSearch, setInterestSearch] = useState(""); // 관심사 검색 상태
 
     const handleOpenModal = () => {
         setCurrentPost({
@@ -153,15 +243,9 @@ export const SocialLayout = () => {
             <LayoutContainer>
                 {/* 검색 섹션 */}
                 <SearchSection>
-                    <SearchInput
-                        placeholder="Search by keyword..."
-                        onChange={(e) => setInterestSearch(e.target.value)}
-                    />
+                    <SearchInput placeholder="Search by keyword..." />
                     <SearchButton>Search</SearchButton>
-                    <SearchInput
-                        placeholder="Search by interest..."
-                        onChange={(e) => setInterestSearch(e.target.value)}
-                    />
+                    <SearchInput placeholder="Search by interest..." />
                     <SearchButton>Search by Interest</SearchButton>
                 </SearchSection>
 
@@ -172,23 +256,17 @@ export const SocialLayout = () => {
                         <NoData>No Data</NoData>
                     ) : (
                         posts.map((post) => (
-                            <div key={post.id}>
+                            <PostItem key={post.id}>
                                 <h3>{post.title}</h3>
                                 <p>
                                     {post.name} | {post.date}
                                 </p>
                                 <p>{post.content}</p>
-                                {post.image && (
-                                    <img
-                                        src={URL.createObjectURL(post.image)}
-                                        alt="Post"
-                                        style={{ width: "100%", borderRadius: "10px" }}
-                                    />
-                                )}
+                                {post.image && <PostImage src={URL.createObjectURL(post.image)} alt="Post" />}
                                 <Button onClick={() => setPosts((prev) => prev.filter((p) => p.id !== post.id))}>
                                     Delete
                                 </Button>
-                            </div>
+                            </PostItem>
                         ))
                     )}
                 </BoardContainer>
@@ -196,14 +274,16 @@ export const SocialLayout = () => {
                 {/* 친구 추천 섹션 */}
                 <FriendRecommendation>
                     <h3>Friend Recommendation</h3>
-                    <FriendItem>
-                        <span>Profile 1</span>
-                        <span>NickName 1</span>
-                    </FriendItem>
-                    <FriendItem>
-                        <span>Profile 2</span>
-                        <span>NickName 2</span>
-                    </FriendItem>
+                    <FriendList>
+                        <FriendItem>
+                            <span>Profile 1</span>
+                            <span>NickName 1</span>
+                        </FriendItem>
+                        <FriendItem>
+                            <span>Profile 2</span>
+                            <span>NickName 2</span>
+                        </FriendItem>
+                    </FriendList>
                 </FriendRecommendation>
             </LayoutContainer>
 

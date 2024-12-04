@@ -10,6 +10,7 @@ import MakeCharacter from '../component/makeCharacter/MakeCharacter.jsx';
 import { SocialLayout } from '../component/social/SocialLayout.jsx';
 import { ItemShop } from '../component/itemshop/ItemShop.jsx';
 import { Introduction } from '../component/introduction/Introduction.jsx';
+import MemberIntroduction from '../component/memberIntroduction/MemberIntroduction.jsx';
 
 
 const RequireUserId = ({ children }) => {
@@ -52,6 +53,7 @@ export const Routers = () => {
                 ),
                 children: [
                     { path: "/introduction", element: <Introduction/>},
+                    {path: "/memberIntroduction", element: <MemberIntroduction/>},
                     { path: "/friend-board", element: <FriendBoard /> },
                     { path: "/social-main", element: <SocialLayout /> },
                     { path: "/item-shop", element: <ItemShop /> },

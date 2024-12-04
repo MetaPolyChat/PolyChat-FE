@@ -133,17 +133,15 @@ export const Login = () => {
 
     const openModal = () => {
         setIsModalOpen(true);
-        console.log("Modal opened!");
     };
 
     const closeModal = () => {
         setIsModalOpen(false);
-        console.log("Modal closed!");
     };
 
     const handleLogin = () => {
         if (userId === '11' && password === 'user11') {
-            navigate(`/unity-build?userId=${userId}`);
+            navigate(`/social-main?userId=${userId}`);
         } else {
             alert('No');
         }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
+import MemberIntroduction from '../memberIntroduction/MemberIntroduction.jsx';
 
 // 전역 스타일: 기본 마진 및 패딩 제거
 const GlobalStyle = createGlobalStyle`
@@ -41,6 +42,19 @@ const Header = styled.header`
     z-index: 10;
     transform: ${({ isHidden }) => (isHidden ? 'translateY(-100%)' : 'translateY(0)')};
     transition: transform 0.3s ease;
+`;
+
+// 네비게이션 스타일 수정 (Flex를 위한 컨테이너 스타일 추가)
+const NavContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+`;
+
+// 오른쪽 메뉴 스타일
+const RightNav = styled.nav`
+    display: flex;
+    gap: 20px;
 `;
 
 // 네비게이션 스타일
@@ -95,6 +109,19 @@ const Content = styled.main`
     transition: margin-top 0.3s ease;
 `;
 
+const NicknameStatus = styled.div`
+    color: white;
+    font-size: 16px;
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+
+    span {
+        font-weight: bold;
+        margin-left: 5px;
+    }
+`;
+
 export const PrivateLayout = () => {
     const [isHeaderHidden, setIsHeaderHidden] = useState(false);
     const location = useLocation();
@@ -114,12 +141,26 @@ export const PrivateLayout = () => {
                     {isHeaderHidden ? 'ON' : 'OFF'}
                 </ToggleButton>
                 <Header isHidden={isHeaderHidden}>
-                    <Nav>
-                        <NavItem to={`/introduction?userId=${userId}`}>Introduction</NavItem>
-                        <NavItem to={`/friend-board?userId=${userId}`}>Friend Board</NavItem>
-                        <NavItem to={`/social-main?userId=${userId}`}>Social Board</NavItem>
-                        <NavItem to={`/item-shop?userId=${userId}`}>Item Shop</NavItem>
-                    </Nav>
+                    <NavContainer>
+                        {/* 왼쪽 메뉴 */}
+                        <Nav>
+                            <NavItem to={`/introduction?userId=${userId}`}>Introduction</NavItem>
+                            <NavItem to={`/memberIntroduction?userId=${userId}`}>MemberIntroduction</NavItem>
+                            <NavItem to={`/friend-board?userId=${userId}`}>Friend Board</NavItem>
+                            <NavItem to={`/social-main?userId=${userId}`}>Social Board</NavItem>
+                            <NavItem to={`/item-shop?userId=${userId}`}>Item Shop</NavItem>
+                        </Nav>
+                        {/* 오른쪽 메뉴 */}
+                        <RightNav>
+                            {userId && (
+                                <NicknameStatus>
+                                    <span>{`User ${userId}`}</span> 접속중
+                                </NicknameStatus>
+                            )}
+                            <NavItem to={`/`}>Logout</NavItem>
+                            <NavItem to={`/unity-build?userId=${userId}`}>World</NavItem>
+                        </RightNav>
+                    </NavContainer>
                 </Header>
                 <Content isHeaderHidden={isHeaderHidden}>
                     <Outlet />

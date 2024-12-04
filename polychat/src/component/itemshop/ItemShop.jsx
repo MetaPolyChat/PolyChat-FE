@@ -1,5 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
+import midiaBackground from '../../Midia/univerBackground.mp4';
+
+const BackgroundVideo = styled.video`
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+`;
+
 
 const ShopContainer = styled.div`
     width: 100%;
@@ -75,7 +87,12 @@ export const ItemShop = () => {
     ];
 
     return (
-        <ShopContainer>
+        <>
+            <BackgroundVideo autoPlay muted loop>
+                <source src={midiaBackground} type="video/mp4" />
+                Your browser does not support the video tag.
+            </BackgroundVideo>
+            <ShopContainer>
             <Title>Item Shop</Title>
             <ItemList>
                 {items.map((item) => (
@@ -87,5 +104,6 @@ export const ItemShop = () => {
                 ))}
             </ItemList>
         </ShopContainer>
+        </>
     );
 };
