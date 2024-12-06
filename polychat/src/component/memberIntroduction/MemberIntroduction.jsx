@@ -65,38 +65,32 @@ const MemberIntroduction = () => {
         {
             image: "https://via.placeholder.com/100",
             name: "Dohyun Kim",
-            part: "Interest API, WebRTC, Chat FE, Domain Management",
-            introduction: "Not Introduction",
+            part: "Interest API, WebRTC, Chat FrontEnd, Domain Management",
         },
         {
             image: "https://via.placeholder.com/100",
-            name: "Lee Dong-ryeol",
+            name: "Lee Dong-ryeol ( Team leader )",
             part: "Chat FrontEnd Unity 6, AI voice chat, domain management, planning",
-            introduction: "Not Introduction",
         },
         {
             image: "https://via.placeholder.com/100",
             name: "Oh Dokhung",
             part: "Unity6, Friend API, membership registration FrontEnd, Google login, UI/UX",
-            introduction: "Not Introduction",
         },
         {
             image: "https://via.placeholder.com/100",
             name: "Jin Seok Jeon",
             part: "User API, Nginx, log settings, Google login",
-            introduction: "Not Introduction",
         },
         {
             image: "https://via.placeholder.com/100",
             name: "Hong Gwan-seop",
             part: "Administrator API, Firebase, Administrator FrontEnd, CORS settings",
-            introduction: "Not Introduction",
         },
         {
             image: "https://via.placeholder.com/100",
             name: "Jaeho Yang",
             part: "Planning, QA, UI/UX/ Unity assets",
-            introduction: "Not Introduction",
         },
     ];
 
@@ -113,7 +107,6 @@ const MemberIntroduction = () => {
                     <CardDetails>
                         <CardText bold>Name: {member.name}</CardText>
                         <CardText>Part: {member.part}</CardText>
-                        <CardText>Introduction: {member.introduction}</CardText>
                     </CardDetails>
                 </Card>
             ))}

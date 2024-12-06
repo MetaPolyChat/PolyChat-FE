@@ -30,7 +30,6 @@ export const UnityComponent = () => {
 
     useEffect(() => {
         if (isLoaded) {
-            // Unity 초기화 시 데이터 전달
             sendMessage("Canvas@[UIManager]", "AddId", JSON.stringify(userId));
         }
     }, [isLoaded, userId]);
