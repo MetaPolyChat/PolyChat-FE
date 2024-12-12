@@ -128,7 +128,7 @@ export const CreateAccount = () => {
         }
         setError('');
 
-        axios.post('https://polychat.fun:18000/api/auth/google/signup', {
+        axios.post('https://polychat.fun/api/auth/google/signup', {
             userId: userId,
             nickname: nickname,
         })
