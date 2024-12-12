@@ -36,12 +36,15 @@ const ImageWrapper = styled.div`
     align-items: center;
 `;
 
-// Title image styling
 const StyledImage = styled.img`
-    width: 100%;
+    width: auto;
     height: auto;
+    max-width: 100%;
+    max-height: 100%;
     object-fit: contain;
+    aspect-ratio: 16/9;
 `;
+
 
 // Main content container
 const ContentContainer = styled.div`

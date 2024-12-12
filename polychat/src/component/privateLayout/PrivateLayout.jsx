@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
-import MemberIntroduction from '../memberIntroduction/MemberIntroduction.jsx';
-
 
 const GlobalStyle = createGlobalStyle`
     * {
@@ -12,8 +10,8 @@ const GlobalStyle = createGlobalStyle`
     }
 
     body {
-        background-color: black; /* 배경색을 원하는 색으로 설정 */
-        overflow: hidden; /* 필요 없는 스크롤 제거 */
+        background-color: black;
+        overflow: hidden;
     }
 
     html, body, #root {
@@ -21,7 +19,6 @@ const GlobalStyle = createGlobalStyle`
     }
 `;
 
-// Layout 스타일 컨테이너
 const LayoutContainer = styled.div`
     display: flex;
     flex-direction: column;
@@ -29,7 +26,6 @@ const LayoutContainer = styled.div`
     color: white;
 `;
 
-// 헤더 (Toolbar) 스타일
 const Header = styled.header`
     width: 100%;
     background-color: rgba(0, 0, 0, 0.9);
@@ -44,6 +40,15 @@ const Header = styled.header`
     transition: transform 0.3s ease;
 `;
 
+const HoverZone = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 10px; /* 헤더가 숨겨져 있을 때 이벤트를 감지하는 얇은 영역 */
+    z-index: 15;
+    background-color: transparent;
+`;
 
 const NavContainer = styled.div`
     display: flex;
@@ -51,18 +56,10 @@ const NavContainer = styled.div`
     width: 100%;
 `;
 
-// 오른쪽 메뉴 스타일
-const RightNav = styled.nav`
-    display: flex;
-    gap: 20px;
-`;
-
-// 네비게이션 스타일
 const Nav = styled.nav`
     display: flex;
     gap: 20px;
 `;
-
 
 const NavItem = styled(Link)`
     color: white;
@@ -77,36 +74,15 @@ const NavItem = styled(Link)`
     }
 `;
 
-// 토글 버튼 스타일
-const ToggleButton = styled.button`
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    font-size: 14px;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    position: fixed;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 20;
-
-    &:hover {
-        background-color: rgba(255, 255, 255, 0.2);
-    }
-
-    &:focus {
-        outline: none;
-    }
+const RightNav = styled.nav`
+    display: flex;
+    gap: 20px;
 `;
-
 
 const Content = styled.main`
     flex: 1;
-    margin-top: ${({ isHeaderHidden }) => (isHeaderHidden ? '0' : '60px')};
+    margin-top: 60px;
     padding: 20px;
-    transition: margin-top 0.3s ease;
 `;
 
 const NicknameStatus = styled.div`
@@ -123,24 +99,30 @@ const NicknameStatus = styled.div`
 `;
 
 export const PrivateLayout = () => {
-    const [isHeaderHidden, setIsHeaderHidden] = useState(false);
+    const [isHeaderHidden, setIsHeaderHidden] = useState(true);
     const location = useLocation();
     const params = new URLSearchParams(location.search);
     const userId = params.get('userId') || 0;
-    
 
-    const toggleHeaderVisibility = () => {
-        setIsHeaderHidden((prevState) => !prevState);
+    const handleMouseEnter = () => {
+        setIsHeaderHidden(false); // 헤더를 보이도록 설정
+    };
+
+    const handleMouseLeave = () => {
+        setIsHeaderHidden(true); // 헤더를 숨기도록 설정
     };
 
     return (
         <>
             <GlobalStyle />
             <LayoutContainer>
-                <ToggleButton onClick={toggleHeaderVisibility}>
-                    {isHeaderHidden ? 'ON' : 'OFF'}
-                </ToggleButton>
-                <Header isHidden={isHeaderHidden}>
+                {/* 헤더가 숨겨져 있을 때 이벤트 감지용 HoverZone */}
+                <HoverZone onMouseEnter={handleMouseEnter} />
+                {/* 실제 헤더 */}
+                <Header
+                    isHidden={isHeaderHidden}
+                    onMouseLeave={handleMouseLeave}
+                >
                     <NavContainer>
                         <Nav>
                             <NavItem to={`/introduction?userId=${userId}`}>Introduction</NavItem>
@@ -160,7 +142,7 @@ export const PrivateLayout = () => {
                         </RightNav>
                     </NavContainer>
                 </Header>
-                <Content isHeaderHidden={isHeaderHidden}>
+                <Content>
                     <Outlet />
                 </Content>
             </LayoutContainer>
