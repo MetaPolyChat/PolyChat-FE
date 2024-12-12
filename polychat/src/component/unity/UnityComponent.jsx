@@ -17,7 +17,7 @@ export const UnityComponent = () => {
     
     
     if (userId && !isNaN(userId)) {
-        userId = Number(userId); // Convert to number
+        userId = Number(userId);
     } else {
         userId = null;
     }

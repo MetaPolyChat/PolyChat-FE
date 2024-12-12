@@ -128,7 +128,7 @@ export const Login = () => {
     const navigate = useNavigate();
 
     const moveBackEndSpringGoogleLogin = () => {
-        window.location.href = 'https://polychat.fun:18000/api/auth/google/redirect';
+        window.location.href = 'https://polychat.fun/api/auth/google/redirect';
     };
 
     const openModal = () => {

@@ -3,7 +3,7 @@ import { Outlet, Link, useLocation } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 import MemberIntroduction from '../memberIntroduction/MemberIntroduction.jsx';
 
-// 전역 스타일: 기본 마진 및 패딩 제거
+
 const GlobalStyle = createGlobalStyle`
     * {
         margin: 0;
@@ -44,7 +44,7 @@ const Header = styled.header`
     transition: transform 0.3s ease;
 `;
 
-// 네비게이션 스타일 수정 (Flex를 위한 컨테이너 스타일 추가)
+
 const NavContainer = styled.div`
     display: flex;
     justify-content: space-between;
@@ -63,7 +63,7 @@ const Nav = styled.nav`
     gap: 20px;
 `;
 
-// 네비게이션 아이템 (링크) 스타일
+
 const NavItem = styled(Link)`
     color: white;
     text-decoration: none;
@@ -101,7 +101,7 @@ const ToggleButton = styled.button`
     }
 `;
 
-// 메인 콘텐츠 스타일
+
 const Content = styled.main`
     flex: 1;
     margin-top: ${({ isHeaderHidden }) => (isHeaderHidden ? '0' : '60px')};
@@ -142,7 +142,6 @@ export const PrivateLayout = () => {
                 </ToggleButton>
                 <Header isHidden={isHeaderHidden}>
                     <NavContainer>
-                        {/* 왼쪽 메뉴 */}
                         <Nav>
                             <NavItem to={`/introduction?userId=${userId}`}>Introduction</NavItem>
                             <NavItem to={`/memberIntroduction?userId=${userId}`}>MemberIntroduction</NavItem>
@@ -150,11 +149,10 @@ export const PrivateLayout = () => {
                             <NavItem to={`/social-main?userId=${userId}`}>Social Board</NavItem>
                             <NavItem to={`/item-shop?userId=${userId}`}>Item Shop</NavItem>
                         </Nav>
-                        {/* 오른쪽 메뉴 */}
                         <RightNav>
                             {userId && (
                                 <NicknameStatus>
-                                    <span>{`User ${userId}`}</span> 접속중
+                                    <span>{`User ${userId}`}</span> isLogin
                                 </NicknameStatus>
                             )}
                             <NavItem to={`/`}>Logout</NavItem>

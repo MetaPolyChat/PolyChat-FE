@@ -165,7 +165,7 @@ const FriendBoard = () => {
     // Fetch posts from backend (API call)
     const fetchPosts = async () => {
         try {
-            const response = await axios.get('https://polychat.fun:18000/api/friendBoard/listView');
+            const response = await axios.get('https://polychat.fun/api/friendBoard/listView');
 
             const formatter = new Intl.DateTimeFormat('ko-KR', {
                 year: 'numeric',

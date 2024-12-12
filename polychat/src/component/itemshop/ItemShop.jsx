@@ -80,11 +80,13 @@ const ItemPrice = styled.span`
 
 export const ItemShop = () => {
     const items = [
-        { id: 1, name: 'Sword', price: 100 },
-        { id: 2, name: 'Shield', price: 150 },
-        { id: 3, name: 'Potion', price: 50 },
-        { id: 4, name: 'Helmet', price: 120 },
+        { id: 1, name: 'None', price: 0 },
+        { id: 2, name: 'None', price: 0 },
+        { id: 3, name: 'None', price: 0 },
+        { id: 4, name: 'None', price: 0 },
     ];
+    
+    
 
     return (
         <>
